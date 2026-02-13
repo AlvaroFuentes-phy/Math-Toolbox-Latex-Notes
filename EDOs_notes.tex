@@ -1,0 +1,1514 @@
+\documentclass[11pt,a4paper, openany]{book}
+
+% =======================
+% Paquetes básicos
+% =======================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{physics}
+\usetikzlibrary{arrows.meta, positioning}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.markings}
+
+\newcommand{\dbar}{{\mkern3mu\mathchar'26\mkern-12mu \delta}}
+\usetikzlibrary{decorations.pathmorphing, decorations.pathreplacing, arrows.meta, positioning}
+
+% =======================
+% Configuración de página
+% =======================
+\geometry{margin=2.5cm}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\headsep=30pt
+
+% =======================
+% Colores personalizados
+% =======================
+\definecolor{ucoblue}{HTML}{003366}
+\definecolor{ucogold}{HTML}{C6A664}
+\definecolor{lightgray}{HTML}{F5F5F5}
+
+% =======================
+% Encabezado y pie
+% =======================
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textbf{Termodinámica}}
+\lhead{\includegraphics[height=1cm]{uco-logo.png}}
+\cfoot{\thepage}
+
+% =======================
+% Estilo de títulos
+% =======================
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{ucoblue}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{ucogold}}
+  {\thesubsection}{1em}{}
+
+% =======================
+% Entornos Teorema, Ley, etc.
+% =======================
+\newtheoremstyle{ucostyle}
+  {10pt} % Space above
+  {10pt} % Space below
+  {\itshape} % Body font
+  {} % Indent
+  {\bfseries\color{ucoblue}} % Head font
+  {.} % Punctuation after teorema name
+  {0.5em} % Space after teorema name
+  {} % teorema head spec
+
+\theoremstyle{ucostyle}
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{ley}{Law}[section]
+\newtheorem{Corolary}{Corolario}[section]
+\newtheorem{definicion}{Definicion}[section]
+\newtheorem{ejemplo}{Ejemplo}[section]
+\newtheorem{lemma}{Lema}[section]
+\newtheorem{proposicion}{Proposición}[section]
+
+
+
+
+% =======================
+% Cajas personalizadas
+% =======================
+\tcbset{
+  frame code={},
+  center title,
+  left=2mm,
+  right=2mm,
+  top=1mm,
+  bottom=1mm,
+  colback=lightgray,
+  colframe=ucoblue!60!black,
+  fonttitle=\bfseries,
+  rounded corners,
+  enhanced,
+  boxrule=0.6pt
+}
+
+% Caja de fórmula
+\newtcolorbox{formula}[1][]{
+  colback=ucoblue!5!white,
+  colframe=ucoblue!70!black,
+  title=#1
+}
+
+% Caja de nota
+\newtcolorbox{nota}[1][]{
+  colback=ucogold!10!white,
+  colframe=ucogold!70!black,
+  title=#1
+}
+
+% =======================
+% Documento
+% =======================
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge \bfseries Apuntes de EDOs \\[0.5em]}
+  {\Large Universidad de Córdoba}\\[1em]
+  \vspace{15pt}
+  \includegraphics[width=7cm]{Logotipo_I_Facultad_de_Ciencias_Fondo_blanco_negativo.png}\\
+ 
+  \vspace{1cm}
+  {\large Autor: Álvaro Fuentes Sánchez}\\
+  {\large Profesor: Antonio Luis Martínez Triviño   }
+  \vspace{2.5cm}
+  \hspace{1.5cm}
+\begin{flushleft}
+\Large\textit{«Even if without the Scott's proverbial thrift, the difficulty of solving differential equations is an incentive to using them parsimoniously. Happily here is a commodity of which a little may be made to go a long way. ...the equation of small oscillations of a pendulum also holds for other vibrational phenomena. In investigating swinging pendulums we were, albeit unwittingly, also investigating vibrating tuning forks.»}\\[0.5em]
+\large--- George Pólya, Mathematical Methods in Science (1977)
+\end{flushleft}
+\end{titlepage}
+
+\clearpage
+\thispagestyle{empty} % Quita el número de página
+
+% --- SECCIÓN DE DERECHOS DE AUTOR ---
+\begin{center}
+    \Large \textbf{Derechos de autor}
+\end{center}
+
+\vspace{0.5cm}
+
+Al ser unos apuntes desarrollados como actividad complementaria al grado de Física este documento no pretende ser un trabajo original, sino que está basado en gran parte en las clases impartidas en la \textbf{Universidad de Córdoba} y diversos libros de texto de referencia. Para hacer la lectura más amena, se han omitido las referencias explícitas en cada sección.
+
+\vspace{0.3cm}
+
+  Estos apuntes están escritos bajo la licencia Creative Commons, concretamente con la licencia:
+
+\begin{center}
+    \textbf{Reconocimiento-NoComercial CC-BY-NC}
+\end{center}
+
+  Esto implica que:
+\begin{itemize}[label=\textbullet]
+    \item El beneficiario de la licencia tiene el derecho de copiar, distribuir, exhibir y representar la obra y hacer obras derivadas siempre y cuando reconozca y cite la obra de la forma especificada por el autor.
+    \item El beneficiario de la licencia tiene el derecho de copiar, distribuir, exhibir y representar la obra y hacer obras derivadas para fines no comerciales.
+\end{itemize}
+
+\vspace{0.5cm}
+
+% --- SECCIÓN DE COPYRIGHT (INGLÉS) ---
+\begin{center}
+    \Large \textbf{Copyright}
+\end{center}
+
+\vspace{0.5cm}
+
+  Being a set of lecture notes, this work pretends by no means to be original, but clearly relies heavily on textbooks and courses from the \textbf{University of Córdoba}. In order to make the text more readable, we have omitted the explicit references in the text.
+
+\vspace{0.3cm}
+
+  This work has been written under the Creative Commons license, more specifically under the licence:
+
+\begin{center}
+    \textbf{Attribution-NonCommercial CC-BY-NC}
+\end{center}
+
+  This means that:
+\begin{itemize}[label=\textbullet]
+    \item Licensees may copy, distribute, display and perform the work and make derivative works based on it only if they give the author or licensor the credits in the manner specified by these.
+    \item Licensees may copy, distribute, display and perform the work and make derivative works based on it only for noncommercial purposes.
+\end{itemize}
+
+\vspace{1.5cm}
+
+\begin{flushright}
+    Fuente Palmera, \today
+\end{flushright}
+\tableofcontents
+
+\chapter{Conceptos Previos. Topología de la Distancia e Introducción a la Teoría de EDOs}
+
+
+\section{Primeros conceptos}
+En esta sección, vamos a introducir el concepto de abierto y cerrado en la topología de la distancia. Veremos la relación existente entre la convergencia de sucesiones y el concepto de compacidad gracias al Teorema de Heine-Borel-Lebesgue. Además, introduciremos los espacios de funciones y en ellos, la convergencia uniforme y puntual junto con el concepto de aplicación Lipschitziana. Finalmente, enunciaremos el Teorema del punto fijo de Banach para espacios métricos completos, esencial en el estudio de existencia y unicidad de solución para el problema de valores iniciales asociados a ecuaciones diferenciales ordinarias.
+
+\subsection{Topología de la distancia}
+En esta primera parte del curso, vamos a introducir los conceptos preliminares de norma y distancia y la relación que hay entre ellas. Esto nos permitirá definir la topología asociada a una distancia; fundamental en el desarrollo del curso para el estudio, en general, de las ecuaciones diferenciales.
+
+\begin{definicion}
+    Sea $V$ un espacio vectorial real. Una función $||\cdot||:V\rightarrow\mathbb{R}$ se llama norma si cumple las siguientes propiedades:
+\begin{enumerate}
+    \item $||u+v|| \le ||u|| + ||v|| \quad \forall u,v \in V$ (Desigualdad triangular).
+    \item $||\lambda u|| = |\lambda| ||u|| \quad \forall u \in V, \forall \lambda \in \mathbb{R}$.
+    \item $||u|| > 0$ para cualquier $u \in V - \{0\}$.
+\end{enumerate}
+Si $||\cdot||$ es una norma, entonces denominaremos a $(V, ||\cdot||)$ espacio normado.
+\end{definicion}
+
+
+Ejemplos de normas en el espacio euclídeo $\mathbb{R}^n$ son los siguientes: para cualquier vector $u=(u_{1},\dots,u_{n})\in\mathbb{R}^{n}$ podemos definir las siguientes tres aplicaciones (se deja al lector el ejercicio de comprobar que verdaderamente son normas; se recomienda usar la desigualdad de Cauchy-Schwarz para el segundo caso).
+\[ ||u||_{1}=\sum_{k=1}^{n}|u_{i}|, \quad ||u||_{2}=\left(\sum_{k=1}^{n}|u_{i}|^{2}\right)^{1/2}, \quad ||u||_{\infty}=\max_{1\le k\le n}|u_{k}|. \]
+
+\begin{lema}
+Sea $V$ un espacio vectorial real con un producto escalar $\langle\cdot,\cdot\rangle:V\times V\rightarrow\mathbb{R}$ definido positivo. Entonces la función $||\cdot||:V\rightarrow\mathbb{R}$ dada por $||u||=\sqrt{\langle u,u\rangle}$ para cualquier $u\in V$ es una norma, que será denominada por norma inducida por un producto escalar.
+\end{lema}
+
+\begin{proof}
+En este caso, solamente tenemos que comprobar que dicha aplicación verifica las propiedades de ser norma. Sea $u, v\in V$ cualesquiera vectores de $V$ y $\lambda\in\mathbb{R}$ cualquier número real.
+\begin{enumerate}
+    \item $||u+v||^{2}=\langle u+v,u+v\rangle \le ||u||^{2}+||v||^{2}+2||u||||v||=(||u||+||v||)^{2}$.
+    \item $||\lambda u||=\sqrt{\langle\lambda u,\lambda u\rangle}=\sqrt{\lambda^{2}\langle u,u\rangle}=|\lambda|||u||$.
+    \item $||u||=\sqrt{\langle u,u\rangle} \ge 0$ y $||u||=0$ si y sólo si $u=0$.
+\end{enumerate}
+Nótese que en el primer paso 1. hemos usado la desigualdad de Cauchy-Schwarz. Recordamos que esta desigualdad nos dice que para cualesquiera vectores $u, v\in V$ dotado de un producto escalar $\langle \cdot, \cdot \rangle$ se tiene que
+\begin{equation}
+    \langle u,v\rangle \le \sqrt{\langle u,u\rangle}\sqrt{\langle v,v\rangle},
+\end{equation}
+dándose la igualdad si y sólo si $u$ y $v$ son linealmente dependientes.
+\end{proof}
+
+Se deja al lector la demostración del siguiente resultado; el cuál nos da una relación entre la norma y el producto escalar pudiendo recuperar uno a partir del otro.
+
+\begin{lemma}
+Sea $V$ un espacio vectorial real con $\langle \cdot, \cdot \rangle$ su producto escalar y $||\cdot||$ la norma inducida por el producto escalar. Entonces se verifican las siguientes igualdades para cualesquiera $u, v\in V$:
+\[ \langle u,v\rangle = \frac{1}{4}(||u+v||^{2}-||u-v||^{2}) = \frac{1}{2}(||u+v||^{2}-||u||^{2}-||v||^{2}). \]
+\end{lemma}
+
+Pasamos ahora al concepto de distancia, el cuál nos servirá para introducir la topología asociada a la distancia; herramienta que usaremos a lo largo de todo este curso y crucial en la comprensión de la teoría matemática.
+
+\begin{definicion}
+Sea $X$ un conjunto no vacío. Una función $d:X\times X\rightarrow\mathbb{R}$ se denomina distancia en $X$ si cumple con las siguientes propiedades:
+\begin{enumerate}
+    \item $d(a,b) \ge 0$ para cualquiera $a, b\in X$.
+    \item Si $a,b\in X$ y $d(a,b)=0$ entonces $a=b$.
+    \item $d(a,b)=d(b,a)$ para todos $a, b\in X$.
+\end{enumerate}
+Si $d$ es una distancia, entonces denominaremos a $(X,d)$ por espacio métrico.
+\end{definicion}
+
+\begin{lemma}
+Sea $(V, ||\cdot||)$ un espacio normado. Entonces la función $d:V\times V\rightarrow\mathbb{R}$ dada por $d(u,v)=||u-v||$ es una distancia y por lo tanto $(V,d)$ es un espacio métrico.
+\end{lemma}
+
+\begin{proof}
+De nuevo, solamente tenemos que comprobar que dicha aplicación $d$ verifica las tres propiedades de ser distancia para cualesquiera $u, v\in V$.
+\begin{enumerate}
+    \item Por la propiedad 3 de ser norma, $||u-v||>0$ si y sólo si $u\ne v$. Por otro lado, si $u=v$, $||u-v||=0$. Por lo tanto, $||u-v||\ge0$ y entonces $d(u,v)\ge0$.
+    \item Si $d(u,v)=0$, entonces $||u-v||=0$. Y de nuevo, por la propiedad 3 de ser norma, $u=v$.
+    \item Por último, por la propiedad 2 de ser norma $||u-v||=|-1|||v-u||=||v-u||$. En consecuencia, $d(u,v)=d(v,u)$.
+\end{enumerate}
+\end{proof}
+
+Como consecuencia, para un espacio vectorial real $V$ con producto escalar $\langle \cdot, \cdot \rangle$ definido positivo podemos definir una distancia
+\[ d(u,v)=\sqrt{\langle u-v,u-v\rangle} \quad \forall u, v\in V, \]
+dotándolo de estructura de espacio métrico. Además, podemos recuperar la distancia a partir de la norma y viceversa. En este punto, decir que no todas las distancias provienen de una norma. Como ejemplo: $d:V\times V\rightarrow\mathbb{R}$ dado por $d(u,v)=1$ si $u\ne v$ y $d(u,v)=0$ si $u=v$. Se deja al lector probar que efectivamente $d$ es una distancia y que no proviene de ninguna norma.
+
+Estamos ya preparados para introducir el concepto de bola abierta y cerrada en un espacio vectorial métrico $(V, d)$ asociado a una distancia.
+
+\begin{definicion}
+Se define la bola abierta centrada en $p$ y radio $\epsilon>0$ al conjunto
+\[ B(p,\epsilon)=\{q\in V \mid d(p,q)<\epsilon\}. \]
+De forma análoga, se define la bola cerrada centrada en $p$ y radio $\epsilon>0$ al conjunto $\overline{B(p,\epsilon)}=\{q\in V \mid d(p,q)\le\epsilon\}$.
+\end{definicion}
+
+Con esta definición, podemos dotar a un espacio métrico $(V,d)$ de una topología, denominada topología de la distancia. El concepto de espacio topológico es muy general, de hecho, no todas las topologías provienen de una distancia. Para nuestro caso y para el desarrollo del curso, será suficiente el estudio de espacios topológicos inducidos por una distancia.
+
+\begin{definicion}
+Un abierto $U\subset V$ de la topología de la distancia en $(V, d)$ es un conjunto de $V$ que cumple la siguiente propiedad: para cualquier $p\in U$ existe un $\epsilon>0$ tal que $B(p,\epsilon)\subset U$. Al conjunto de puntos que cumplen esta propiedad se denomina puntos interiores y será denotado por $\text{int}(U)$.
+\end{definicion}
+
+\begin{definicion}
+Un cerrado $U$ de la topología de la distancia en $(V,d)$ es un conjunto de $V$ que cumple la siguiente propiedad: su complementario $V-U$ en $V$ es un abierto. Los puntos que pertenezcan a $U-\text{int}(U)$ se denominan puntos de borde y será denotado por $\partial U$. En tal caso, si definimos por $\overline{U}=\text{int}(U)\cup\partial U$, entonces $U$ es cerrado si y sólo si $U=\overline{U}$.
+\end{definicion}
+
+\begin{definicion}
+Un conjunto $U$ en un espacio métrico $(V,d)$ se dice que está acotado, si existe un radio $\epsilon>0$ tal que $U\subset B(0,\epsilon)$.
+\end{definicion}
+
+Es fácil ver que, efectivamente, una bola abierta es un abierto de dicha topología y la bola cerrada es un cerrado.
+
+\begin{definicion}
+Si $B(p,\epsilon)$ es una bola abierta, se define esfera de centro $p$ y radio $\epsilon>0$ al conjunto $\mathbb{S}(p,\epsilon)=\partial B(p,\epsilon)$.
+\end{definicion}
+
+Cuando el radio sea la unidad, se denominará bola y esfera unidad respectivamente. Se recomienda al lector, representar en $\mathbb{R}^{2}$ la esfera unidad asociada a las distancias inducidas por las normas $||\cdot||_{1}, ||\cdot||_{2}$ y $||\cdot||_{\infty}$, para ver como cambia la geometría en cada una de las topologías.
+
+\begin{definicion}
+Un conjunto $U$ se dice que es conexo si para cualesquiera dos puntos distintos de $U$ existe una curva continua que los una, es decir, para cualesquiera $p, q\in U$, existe una curva continua $\alpha:[0,1]\rightarrow U$ tal que $\alpha(0)=p$ y $\alpha(1)=q$.
+\end{definicion}
+
+De aquí en adelante, denominaremos a cualquier abierto conexo por dominio y será denotado por $\Omega$. Intuitivamente, un conjunto es conexo cuando solamente está determinado únicamente por una sola "pieza". Por ejemplo, cualquier intervalo de $\mathbb{R}$ es conexo pero si consideramos la unión de dos intervalos disjuntos entonces sería un ejemplo no conexo.
+
+\subsection{Sucesiones y compacidad}
+Pasamos a estudiar ahora, el concepto de compacidad gracias a la convergencia de las sucesiones en topología.
+
+\begin{definicion}
+Sea $(V, d)$ un espacio métrico y sea $p_{n}:\mathbb{N}\rightarrow V$ una sucesión de puntos de $V$. Diremos que $p_{n}$ converge a $p$, que será denotado por $p_{n}\rightarrow p$, si cumple la siguiente propiedad:
+\[ \forall\epsilon>0 \quad \exists m\in\mathbb{N} \mid d(p_n, p) < \epsilon \quad \forall n > m. \]
+\end{definicion}
+
+En general, para un espacio topológico, $p_{n}\rightarrow p$ si para cualquier abierto $U$ conteniendo a $p$ existe un $m\in\mathbb{N}$ tal que $p_{n}\in U$ para todo $n>m$. Al punto $p$ se denominará límite.
+En general, para un espacio topológico arbitrario el límite no tiene porqué ser único. Para asegurar dicha unicidad el espacio tiene que ser Hausdorff. Sin embargo, cualquier espacio métrico con la topología de la distancia es Hausdorff y por lo tanto podemos asegurar la unicidad del límite.
+
+\begin{definicion}
+Sea $(V,d)$ un espacio métrico, $p_{n}$ una sucesión de puntos de $V$ y $\sigma:\mathbb{N}\rightarrow\mathbb{N}$ una aplicación estrictamente monótona. Se denomina sucesión parcial de $p_{n}$ a la sucesión de puntos $p_{\sigma(n)}$.
+\end{definicion}
+
+En este caso, si $p_{n}$ es convergente a un punto $p$ entonces cualquier sucesión parcial $p_{\sigma(n)}$ también converge a $p$. Por otro lado, nótese que la convergencia depende de la distancia. Es posible, que una sucesión converja para una distancia y para otras no. Sin embargo, en $\mathbb{R}^{n}$ todas las normas son equivalentes, es decir, si converge para una norma entonces también converge para cualquier otra norma.
+
+\begin{lemma}
+Un conjunto $U$ es cerrado si y sólo si para cualquier sucesión convergente de puntos de $U$ tiene límite en $U$.
+\end{lemma}
+
+\begin{proof}
+Supongamos que $U$ es cerrado y considera $p_{n}\subset U$ cualquier sucesión de puntos convergente con límite $p$. Si $p\in V-U$; como $U$ es cerrado, podemos encontrar $B(p,\epsilon)\subset V-U$ conteniendo a $p$ y tal que $U\cap B(p,\epsilon)=\emptyset$. Pero esto es una contradicción ya que $p_{n}\subset B(p,\epsilon)$ para $n$ suficientemente grande.
+
+Ahora probamos el recíproco. Supongamos que cualquier sucesión $p_{n}\subset U$ convergente tiene límite en $U$. Tenemos que probar que $V-U$ es abierto. Supongamos que existe un punto $q\in V-U$ y una bola abierta centrada en $q$ tal que para cualquier radio $\epsilon>0$ se tiene que $B(q,\epsilon)\cap U\ne\emptyset$. En este caso, $q\in\partial U$ por lo tanto, considerando una sucesión de puntos que converja a $q$, tenemos que $q\in U$. Pero esto es contradicción ya que en tal caso $U\cap(V-U)\ne\emptyset$.
+\end{proof}
+
+\begin{teorema}[Teorema de Bolzano-Weierstrass]
+Sea $U$ un conjunto acotado de $\mathbb{R}^{n}$. Entonces, para cualquier sucesión de puntos $U$ admite una parcial convergente.
+\end{teorema}
+
+\begin{proof}
+La prueba se hace por inducción en $n$. Para $n=1$, el resultado es conocido por el Teorema de Bolzano-Weierstrass en $\mathbb{R}$. Para el caso general, si tenemos la sucesión $p_{m}=(p_{1,m}, p_{2,m}, \dots, p_{n,m})$ acotada. Cada componente $p_{i,m}$ es una sucesión acotada de números reales y podemos aplicar de nuevo, en cada componente, el Teorema de Bolzano-Weierstrass en $\mathbb{R}$.
+\end{proof}
+
+Como consecuencia del Lema 1.14 y el Teorema 1.15, obtenemos la siguiente consecuencia.
+
+\begin{Corolary}
+Si $U$ es cerrado y acotado en $(V, d)$, entonces cualquier sucesión $p_{n}\subset U$ admite una sucesión parcial convergente con límite en $U$.
+\end{Corolary}
+
+Pues bien, la caracterización de compacidad que vamos a presentar nosotros, es, justamente la otra implicación y resultado de un Teorema muy fuerte en matemáticas. Aunque presentamos la compacidad con la siguiente caracterización decir que la definición de compacto en un espacio topológico es muy general y no vamos a profundizar en ello. (Se deja al lector la búsqueda de información de recubrimientos por abiertos).
+
+\begin{teorema}[Teorema de Heine-Borel-Lebesgue]
+$U$ es compacto si y sólo si para cualquier sucesión $p_{n}\subset U$ admite una parcial convergente con límite en $U$.
+\end{teorema}
+
+Como consecuencia, en $\mathbb{R}^{n}$, recuperamos la definición clásica de compacto.
+
+\begin{teorema}[Teorema de Heine-Borel]
+$U\subset\mathbb{R}^{n}$ es compacto si y sólo si $U$ es cerrado y acotado.
+\end{teorema}
+
+
+\subsection{Sucesiones de Cauchy. Espacios de Banach.}
+
+\begin{definicion}
+Sea $p_{n}$ una sucesión de un espacio métrico $(V,d)$. Diremos que la sucesión es de Cauchy si verifica la siguiente propiedad:
+\[ \forall\epsilon>0 \quad \exists m\in\mathbb{N} \mid d(p_{r},p_{s})<\epsilon \quad \forall r, s>m. \]
+\end{definicion}
+
+Nótese que toda sucesión convergente es de Cauchy; pero el recíproco no es cierto. Cuando esto ocurra diremos que el espacio métrico es completo.
+
+\begin{definicion}
+Un espacio de Banach es un espacio métrico completo cuya distancia proviene de una norma.
+\end{definicion}
+
+Un buen ejercicio al lector sería probar que el conjunto de números reales $\mathbb{R}$ es completo. Para ello usad la siguiente observación; si una sucesión de Cauchy admite una parcial convergente, entonces la sucesión de Cauchy es convergente. La demostración del siguiente resultado se deja como ejercicio para el lector.
+
+\begin{proposition}
+Todo subconjunto cerrado de un espacio completo es completo.
+\end{proposition}
+
+Otro ejemplo muy importante de espacio de Banach son las funciones de cuadrado integrable sobre un dominio $\Omega$, a saber:
+\[ L^{2}(\Omega)=\{f:\Omega\rightarrow\mathbb{R} \mid \int_{\Omega}|f(x)|^{2}dx<+\infty\}. \]
+cuya norma viene dada por
+\[ ||f||_{2}=\left(\int_{\Omega}|f(x)|^{2}dx\right)^{1/2}. \]
+Se deja al lector la prueba de que, efectivamente, dicha aplicación es una norma.
+
+\begin{proposition}
+$L^{2}(\Omega)$ con dicha norma $||\cdot||_{2}$ es un espacio de Banach.
+\end{proposition}
+
+\begin{proof}
+Sea $f_{n}\subset L^{2}(\Omega)$ una sucesión de Cauchy. Entonces:
+\[ \forall\epsilon>0, \exists N\in\mathbb{N} \text{ tal que } m,n\ge N \Rightarrow ||f_{n}-f_{m}||_{2}<\epsilon \]
+Construimos una parcial $\{f_{n_{k}}\}$ tal que:
+\[ ||f_{n_{k+1}}-f_{n_{k}}||_{2}<2^{-k}. \]
+Ahora, definimos la serie telescópica:
+\[ g_{1}=f_{n_{1}}, \quad g_{2}=f_{n_{2}}-f_{n_{1}}, \quad g_{3}=f_{n_{3}}-f_{n_{2}} \]
+Entonces, se puede ver fácilmente que dicha parcial se puede recuperar por $f_{n_{k}}=\sum_{j=1}^{k}g_{j}$.
+Además, $||g_{j}||_{2}=||f_{n_{j}}-f_{n_{j-1}}||_{2}<2^{-j+1}$. y la serie
+\[ \sum_{j=1}^{\infty}||g_{j}||_{2}<\sum_{j=1}^{\infty}2^{-j+1}=2 \]
+es convergente, por lo tanto la serie $\sum_{j=1}^{\infty}g_{j}$ converge en $L^{2}(\Omega)$ a una función $f$. Finalmente, como $\{f_{n}\}$ es de Cauchy y tiene una parcial convergente $\{f_{n_{k}}\}\rightarrow f$, se deduce que toda la sucesión converge a $f$ como queríamos demostrar.
+\end{proof}
+
+Motivados por la completitud de un espacio, nos preguntamos cuando el límite hereda las propiedades de la sucesión; en este ámbito del espacio de funciones entra el concepto de convergencia uniforme y convergencia puntual. De forma general, en un espacio métrico cualquiera:
+
+\begin{definicion}
+Sea $p_{n}$ una sucesión de un espacio métrico $(V,d)$. Se dice que $p_{n}$ converge uniformemente a $p$ si y sólo si
+\[ \forall\epsilon > 0 \quad \exists m \in \mathbb{N} \mid \sup_{n\in\mathbb{N}} d(p_n, p) < \epsilon. \]
+\end{definicion}
+
+\begin{remark}
+Nótese que dicho supremo existe ya que toda sucesión convergente está acotada.
+\end{remark}
+
+Con esta definición y gracias a la completitud de los espacios, respondemos a la pregunta que habíamos planteado anteriormente, es decir, cuando el límite hereda las propiedades de la sucesión.
+
+\begin{lemma}
+Si $x_{n}\subset L^{2}(\Omega)$ una sucesión de funciones que converge uniformemente a $x$ en norma $||\cdot||_{2}$ entonces $x\in L^{2}(\Omega)$. Además, si $\Omega$ es compacto y $x_{n}\subset C^{m}(\Omega)$ converge uniformemente a $x$ en norma $||\cdot||_{\infty}$, entonces $x\in C^{m}(\Omega)$ para $m\in\mathbb{N}$ cualquiera.
+\end{lemma}
+
+Por otro lado, la definición de convergencia puntual en una sucesión de funciones es la siguiente:
+
+\begin{definicion}
+Sea $x_{n}$ una sucesión de funciones $x_{n}:\Omega\rightarrow\mathbb{R}$ definidas en un dominio $\Omega$. Diremos que $x_{n}$ converge puntualmente si para todo punto $p\in\Omega$ la sucesión $x_{n}(p)$ converge como sucesión de números reales.
+\end{definicion}
+
+Decir que la convergencia uniforme es más "fuerte" que la convergencia puntual, de hecho, si $x_{n}$ converge uniformemente a $x$ entonces $x_{n}(p)$ converge puntual a $x(p)$ para cualquier $p$. El recíproco no es cierto, basta con elegir el siguiente ejemplo: $f_{n}:[0,+\infty[\rightarrow\mathbb{R}$ una sucesión de funciones continuas dada por
+\[ f_{n}(t)=\begin{cases}0 & \text{si } t\in[0,n]\\ t-n & \text{si } t\in[n,n+1[\\ 1 & \text{si } t\in[n+1,+\infty]\end{cases} \]
+Dicha sucesión converge puntualmente a 0 y sin embargo, no converge uniformemente a la función constantemente a 0.
+
+Terminamos esta primera sección enunciando el Teorema del punto fijo de Banach para aplicaciones contractivas en espacios métricos completos; fundamental para probar la existencia de solución para ecuaciones diferenciales. Para ello, damos la siguiente definición:
+
+\begin{definicion}
+Sea $T:V\rightarrow V$ una aplicación en un espacio métrico $(V, d)$. Se dice que $T$ es Lipschitziana, con constante de Lipschitz $M>0$, si verifica la siguiente propiedad:
+\[ d(T(p),T(q))\le Md(p,q) \quad \forall p,q\in V. \]
+En el caso en que la constante de Lipschitz sea $M<1$ se dice que $T$ es contractiva.
+\end{definicion}
+
+Pues bien, dicho Teorema nos enuncia lo siguiente:
+
+\begin{teorema}[Teorema del punto fijo de Banach]
+Toda aplicación contractiva en un espacio métrico completo tiene un único punto fijo, es decir, si $T:V\rightarrow V$ es contractiva y $(V,d)$ es completo, entonces existe un único $p\in V$ tal que $T(p)=p$.
+\end{teorema}
+
+\begin{proof}
+Considera $q\in V$ un elemento fijo pero arbitrario de $V$, definimos la sucesión $p_{n}=T(p_{n-1})$ para todo $n\in\mathbb{N}$ y $p_{1}=T(q)$. Puesto que $T$ es contractiva, $p_{n}$ es una sucesión de Cauchy y como $(V, d)$ es completo, entonces $p_{n}$ converge a un único elemento $p\in V$.
+\end{proof}
+
+\section{Definición de la ecuación diferencial ordinaria}
+En este tema introductorio, definimos el concepto de ecuación diferencial ordinaria (EDO) y el concepto de solución de dicha ecuación. Además, estudiamos la existencia y unicidad local del problema de valores iniciales (PVI) gracias al Teorema de Picard-Lindelöf y veremos cuando podremos extender dicha solución a una solución maximal.
+
+\begin{definicion}
+Una ecuación diferencial ordinaria (EDO) escalar es una ecuación que relaciona una función incógnita $x$ de una variable independiente $t$ con sus derivadas. Es decir,
+\begin{equation}
+    \mathcal{G}(t,x(t),x^{\prime}(t),x^{\prime\prime}(t),\dots,x^{n}(t))=0,
+\end{equation}
+donde $\mathcal{G}:\Omega\subset\mathbb{R}^{n+2}\rightarrow 0$ es un campo escalar definido en un dominio $\Omega\subset\mathbb{R}^{n+2}$.
+\end{definicion}
+
+\begin{remark}
+Recordemos que un dominio $\Omega$ de $\mathbb{R}^{n+2}$ es un subconjunto abierto y conexo con la topología de $\mathbb{R}^{n+2}$.
+\end{remark}
+
+\begin{definicion}
+El orden de una EDO es el orden de la derivada mayor que aparece en ella. Si la derivada de mayor orden está despejada, es decir, la EDO viene dada por la aplicación
+\[ \mathcal{G}(y,x(t),x^{\prime}(t),\dots,x^{n}(t))=x^{n}(t)-\mathcal{F}(t,x(t),x^{\prime}(t),\dots,x^{n-1}(t)). \]
+donde $\mathcal{F}:\pi(\Omega)\subset\mathbb{R}^{n-1}\rightarrow\mathbb{R}$ y $\pi$ es la proyección a $\mathbb{R}^{n-1}$, entonces será denominada por EDO en forma normal.
+\end{definicion}
+
+\begin{definicion}
+Una solución de una EDO $\mathcal{G}(y,x(t),\dots,x^{n}(t))=0$ en un dominio $\Omega\subset\mathbb{R}^{n+2}$ es una función $\varphi:I\subset\mathbb{R}\rightarrow\mathbb{R}$ definida en un intervalo $I$ abierto que verifica las siguientes propiedades:
+\begin{enumerate}
+    \item $\varphi\in\mathcal{C}^{n}(I)$
+    \item $(t,\varphi(t),\varphi^{\prime}(t),\dots,\varphi^{n}(t))\in\Omega$ para cualquier $t\in I$
+    \item $\mathcal{G}(t,\varphi(t),\varphi^{\prime}(t),\dots,\varphi^{n}(t))=0$ para cualquier $t\in I$
+\end{enumerate}
+\end{definicion}
+
+Nótese que si la EDO está en forma normal dada por $\mathcal{G}(y,x(t),x^{\prime}(t),\dots,x^{n}(t))=x^{n}(t)-\mathcal{F}(t,x(t),x^{\prime}(t),\dots,x^{n-1}(t))$ podemos dar la siguiente consecuencia:
+
+\begin{lemma}
+Si $F$ es una función continua y $\varphi$ es solución, entonces $\varphi\in\mathcal{C}^{n}(I).$
+\end{lemma}
+
+Por ejemplo, vamos a considerar la siguiente EDO en forma normal $x^{\prime}(t)=\mathcal{F}(t,x(t))$ dada por $\mathcal{F}(t,x(t))=-t~x(t)^{-1}$ con $\mathcal{F}:\mathbb{R}\times]0,+\infty[\rightarrow\mathbb{R}$. Considera $\varphi(t)=\sqrt{1-t^{2}}$ en el intervalo abierto $]-1,1[$, donde $C$ es una constante real. Nótese que $\varphi\in\mathcal{C}^{1}(]-1,1[)$ y además $\varphi(t)>0$ en $]-1,1[$. Por último, por un simple cálculo se tiene que $\varphi^{\prime}(t)=\mathcal{F}(t,\varphi(t))$ para todo $]-1,1[$ y por la tanto, podemos probar que es efectivamente una solución. Para al lector se deja comprobar si la solución es única.
+
+\begin{definicion}
+Un problema de valores iniciales (PVI) de una EDO de orden $n$ consiste en encontrar una solución que verifica unas condiciones iniciales
+\[ x(t_{0})=x_{0}, \quad x^{\prime}(t_{0})=x_{1}, \quad \dots, \quad x^{n-1}(t_{0})=x_{n}; \]
+donde $t_{0}\in I$ y $(t_0, x_0, \dots, x_n) \in \Omega$.
+\end{definicion}
+
+Comprobad que la solución anterior $\varphi(t)=\sqrt{1-t^{2}}$ es solución del siguiente problema de valores iniciales:
+\[ \begin{cases}x^{\prime}(t)=-\frac{t}{x(t)}\\ x(0)=1.\end{cases} \]
+en $\Omega=\mathbb{R}\times]0,+\infty[$.
+
+\begin{definicion}
+Un sistema de $m$ EDOs definido en dominio $\Omega\subset\mathbb{R}^{n+2}$ está determinado por
+\[ \begin{cases}\mathcal{G}^{1}(t,x_{1}(t),x_{1}^{\prime}(t),\dots,x_{n}^{n}(t))=0,\\ \mathcal{G}^{2}(t,x_{2}(t),x_{2}^{\prime}(t),\dots,x_{2}^{n}(t))=0,\\ \vdots\\ \mathcal{G}^{m}(t,x_{m}(t),x_{m}^{\prime}(t),\dots,x_{m}^{n}(t))=0,\end{cases} \]
+donde cada $\mathcal{G}^{i}:\Omega\rightarrow\mathbb{R}$ es una aplicación para todo $i\in\{1,\dots,m\}$. La solución vendrá dada por $m$ funciones $\varphi_{1},\dots,\varphi_{m}:I\rightarrow\mathbb{R}$ verificando las siguientes propiedades:
+\begin{enumerate}
+    \item $\varphi_{i}\in\mathcal{C}^{n}(I)$ para cada $i\in\{1,\dots,m\}$.
+    \item $(t,\varphi_{i}(t),\dots,\varphi_{i}^{n}(t))\in\Omega$ para cada $i\in\{1,\dots,m\}$.
+    \item $\mathcal{G}^{j}(t,\varphi_{i}(t),\dots,\varphi_{i}^{n}(t))=0$ para cada $i, j\in\{1,\dots,m\}$.
+\end{enumerate}
+\end{definicion}
+Por último, las condiciones iniciales de un PVI asociado a un sistema de $m$ EDOs de orden $n$ vienen dadas, para cada $i\in\{1,\dots,m\}$ por
+\[ x_{i}(t_{0})=x_{0}^{i}, \quad x_{i}^{\prime}(t_{0})=x_{1}^{i}, \quad \dots, \quad x_{i}^{n-1}(t_{0})=x_{n}^{i} \]
+
+\begin{teorema}
+Toda EDO de orden $n$ de forma normal se puede transformar a un sistema de EDOs de primer orden.
+\end{teorema}
+
+\begin{proof}
+Considera la siguiente EDO de orden $n$ en forma normal $x^n(t) = F(t, x(t), \dots, x^{n-1}(t))$.
+Defino las siguientes funciones $x_1(t) = x(t), \quad x_2(t) = x'(t), \dots, x_n(t) = x^{n-1}(t)$.
+Nótese que $x'_i(t) = x_{i+1}(t)$ para todo $i \in \{1, \dots, n-1\}$; por lo tanto obtenemos el siguiente sistema
+\[ \begin{cases} x'_1(t) = x_2(t), \\ x'_2(t) = x_3(t), \\ \vdots \\ x'_{n-1}(t) = x_n(t), \\ x'_n(t) = F(t, x(t), \dots, x^{n-1}(t)). \end{cases} \]
+Consecuentemente, usando notación vectorial, definiendo
+\[ X(t) = \begin{pmatrix} x_1(t) \\ \vdots \\ x_n(t) \end{pmatrix} \quad \text{y} \quad F(t, X(t)) = \begin{pmatrix} x_2(t) \\ \vdots \\ x_n(t) \\ F(t, x_1(t), \dots, x_n(t)) \end{pmatrix}, \]
+donde $X : I \subset \mathbb{R} \rightarrow \mathbb{R}^n$ obtenemos el siguiente sistema de primer orden $X'(t) = F(t, X(t))$.
+
+Por ejemplo, considera el siguiente PVI de segundo orden
+\[ \begin{cases} x''(t) + e^t x'(t) + 4x(t) = \sin(t), \\ x(0) = 1, \\ x'(0) = 3. \end{cases} \]
+Llamamos $x_1(t) = x(t)$ y $x_2(t) = x'(t)$. Nótese que $x'_1(t) = x_2(t)$ y $x'_2(t) = \sin(t) - 4x_1(t) - e^t x_2(t)$ con valores iniciales $x_1(0) = 1$ y $x_2(0) = 3$. Por lo tanto,
+\[ X(t) = \begin{pmatrix} x_1(t) \\ x_2(t) \end{pmatrix} \quad \text{y} \quad F(t, X(t)) = \begin{pmatrix} x_2(t) \\ \sin(t) - 4x_1(t) - e^t x_2(t) \end{pmatrix}, \]
+verificando $X'(t) = F(t, X(t))$ con valor inicial $X(0) = \begin{pmatrix} 1 \\ 3 \end{pmatrix}$.
+\end{proof}
+
+\section{Existencia y unicidad de solución local}
+En esta sección, abordamos el estudio de la existencia y unicidad de solución para el problema de valores iniciales de una EDO en forma normal de primer orden y cuando esta solución puede ser extendida al borde. El principal objetivo de esta parte será demostrar el conocido Teorema de Picard-Lindelöf.
+
+Consideramos la siguiente EDO de primer orden en forma normal $x'(t) = F(t, x(t))$ con $F : \Omega \subset \mathbb{R}^{n+1} \rightarrow \mathbb{R}^n$ una función continua y valor inicial $(t_0, x_0) \in \Omega$ con $x(t_0) = x_0$. Nótese que no perdemos generalidad al asumir que dicha EDO es de primer orden por el Teorema 2.8.
+
+\begin{lemma}
+El problema de valores iniciales es equivalente a la ecuación integral (EI) de la forma
+\[ x(t) = x_0 + \int_{t_0}^t F(s, x(s)) \, ds. \]
+A dicha ecuación se dice que es de tipo Volterra si $t$ es variable; en cambio, para $t$ fijo se dice de tipo Fredholm.
+\end{lemma}
+
+Antes de la demostración, vamos a definir la solución para EI.
+
+\begin{definicion}
+Una solución de EI es una función $\varphi : I \subset \mathbb{R} \rightarrow \mathbb{R}^n$ continua en un intervalo $I$ conteniendo a $t_0$ y verificando las siguientes propiedades:
+\begin{enumerate}
+    \item $(t, \varphi(t)) \in \Omega$ para todo $t \in I$.
+    \item $\varphi(t) = x_0 + \int_{t_0}^t F(s, \varphi(s)) \, ds$ para todo $t \in I$.
+\end{enumerate}
+\end{definicion}
+
+Ahora, sí, pasamos a probar el Lema anterior.
+
+\begin{proof}
+Supongamos que $\varphi$ es solución del problema de valores iniciales. Entonces $\varphi$ verifica todas las condiciones vistas en 2.4. Además integrando en la ecuación diferencial, tenemos que
+\[ \varphi(t) = \varphi(t_0) + \int_{t_0}^t F(s, \varphi(s)) \, ds = x_0 + \int_{t_0}^t F(s, \varphi(s)) \, ds. \]
+Recíprocamente, si $\varphi$ es solución de EI. Por el Teorema Fundamental del Cálculo, tenemos garantizada la derivabilidad de $\varphi$ en el intervalo $I$ y con $(t, \varphi(t)) \in \Omega$ y $\varphi'(t) = F(t, \varphi(t))$ para todo $t \in I$. Además para $t = t_0$ tenemos que $\varphi(t_0) = x_0$ como queríamos demostrar.
+\end{proof}
+
+Equivalente, podemos relacionar el concepto de solución de EI con la teoría de puntos fijos para aplicaciones en espacios métricos completos.
+
+\begin{lemma}
+Para el problema de valores iniciales PVI definimos la aplicación $T : C^1(I) \rightarrow C^1(I)$ donde $I$ es un intervalo conteniendo a $t_0$. Entonces, todo punto fijo de $T$ es una solución de EI. Equivalentemente, todo punto fijo de $T$ es solución del problema de valores iniciales.
+\end{lemma}
+
+La idea para probar el Teorema de existencia y unicidad local será probar la existencia de un único punto gracias al Teorema del punto fijo de Banach 1.28. La prueba es muy constructiva, ya que vamos a definir las denominadas iteradas de Picard; una sucesión de funciones que convergerá a la solución del problema de valores iniciales. De hecho, podemos usarlas para dar una solución aproximada de la ecuación diferencial.
+
+\begin{teorema}[Picard-Lindelöf]
+Considera el problema de valores iniciales $x'(t) = F(t, x(t))$ con valor inicial $x(t_0) = x_0$ y $F : \Omega \subset \mathbb{R}^{n+1} \rightarrow \mathbb{R}^n$ una función continua. Si $F$ es Lipschitziana, entonces el problema de valores iniciales tiene una única solución en un entorno de $t_0$.
+\end{teorema}
+
+\begin{proof}
+Fija $(t_0, x_0) \in \Omega$ y considera el siguiente rectángulo
+\[ R = \{(t, x) \in \mathbb{R}^{n+1} \mid |t - t_0| \le a, \quad ||x - x_0|| \le b\} \subset \Omega. \]
+Nótese que $R$ es cerrado y acotado; aplicando el Teorema de Heine-Borel, se tiene que $R$ es compacto. Por lo tanto, como $F$ es continua, existe una constante $K > 0$ tal que $||F(t, x)|| \le K$ para todo $(t, x) \in R$ gracias al Teorema de Weierstrass para funciones continuas. Por otro lado, si $M$ es la constante de Lipschitz de $F$ vamos a considerar
+\[ \alpha < \min \left\{ a, \frac{b}{K}, \frac{1}{M} \right\} \]
+junto con espacio de funciones $C^0(I, \mathbb{R}^n)$ con $I = \{t \in \mathbb{R} \mid |t-t_0| \le \alpha\}$ y norma $||x|| = \max_{t\in I} \{|x(t)|\}$, bien definida de nuevo por el Teorema de Weierstrass. Nótese que el espacio de funciones continuas con dicha norma es un espacio de Banach (la prueba se deja al lector). A dicha norma se le llama la norma de la convergencia uniforme ya que si una sucesión converge con dicha norma lo hace de forma uniforme. En particular, el límite hereda la propiedad de ser continua.
+
+Se toma pues el siguiente subconjunto $A = \{x \in C^0(I, \mathbb{R}^n) \mid x(t_0) = x_0 \text{ y } |x(t) - x_0| \le b\}$. Probamos en primer lugar que $A$ es cerrado. En efecto, sea $x_n \subset A$ una sucesión convergente con límite $x$; como cada $x_n \in A$ se tiene que $|x_n(t)-x_0| \le b$ con $x_n(t_0) = x_0$. Además, dicha convergencia es uniforme; por lo tanto, $x$ es continua con $x(t_0) = x_0$ y $|x(t) - x_0| \le b$, consecuentemente $x \in A$ y por el Lema 1.14, se tiene que $A$ es un conjunto cerrado. Por otro lado, todo conjunto cerrado dentro de un completo es completo. Así que $A$ es un espacio de Banach.
+
+Definimos ahora $T : A \rightarrow A$, denominada iterada de Picard, dada por
+\[ T(x(t)) = x_0 + \int_{t_0}^t F(s, x(s)) \, ds \quad \forall x \in A. \]
+En primer lugar, vemos que está bien definida. Fácilmente, tenemos que $T x(t_0) = x_0$. Además,
+\[ |T x(t) - x_0| \le \int_{t_0}^t |F(s, x(s))| \, ds \le K|t - t_0| \le K \frac{b}{K} = b \]
+por lo tanto, la buena definición está garantizada.
+En segundo lugar, vamos a probar que $T$ es contractiva. Sea $x_1, x_2 \in A$ funciones cualesquiera, entonces
+\[ |T x_1(t) - T x_2(t)| \le \int_{t_0}^t |F(s, x_1(s)) - F(s, x_2(s))| \, ds \le M \int_{t_0}^t |x_1(s) - x_2(s)| \, ds. \]
+Como consecuencia,
+\begin{equation*}
+   ||T x_1(t) - T x_2(t)|| = \max_{t\in I} |T x_1(t) - T x_2(t)| \le M ||x_1(t) - x_2(t)|| |t - t_0| 
+\end{equation*}
+\[  \le \alpha M ||x_1(t) - x_2(t)|| < ||x_1(t) - x_2(t)||. \]
+Luego, $T$ es contractiva en un espacio completo. Aplicando el Teorema del punto fijo de Banach 1.28, obtenemos la existencia y unicidad de solución gracias al Lema 3.3.
+\end{proof}
+
+Nótese que, en algunos casos, comprobar la propiedad de ser Lipschitziana es un problema complejo. Damos, a continuación, condiciones suficientes para garantizar dicha propiedad y garantizar pues, la existencia y unicidad de solución.
+
+
+Si $F : \Omega \subset \mathbb{R}^{n+1} \rightarrow \mathbb{R}$ es de clase $C^1(\Omega)$ con diferencial $dF$ acotada en $\Omega$ un dominio convexo, entonces $F$ es Lipschitziana. En particular, si $F \in C^1(\Omega)$ con $\Omega$ compacto, entonces $F$ es Lipschitziana.
+
+
+\begin{proof}
+Sean $(t_1, x_1), (t_2, x_2) \in \Omega$ cualesquiera. Por hipótesis, existe una constante $M > 0$ tal que $|dF| \le M$ en $\Omega$. Entonces, aplicando el Teorema del valor medio en $\mathbb{R}^{n+1}$, tenemos que
+\[ ||F(t_1, x_1) - F(t_2, x_2)|| \le M ||(t_1, x_1) - (t_2, x_2)||. \]
+\end{proof}
+
+Otra observación que podemos hacer de la demostración es que podemos debilitar la hipótesis de ser Lipschitziana por localmente Lipschitziana, es decir, $F$ restringido a cualquier abierto de $\Omega$, conteniendo a $(t_0, x_0)$, es Lipschitziana. Por otra parte, decir que la unicidad viene gracias también a esta propiedad; si eliminamos dicha hipótesis podemos garantizar existencia de solución gracias al Teorema de existencia de solución de Cauchy-Peano. A saber,
+
+\begin{teorema}[Teorema de Cauchy-Peano]
+Si $F$ es continua en $\Omega$, entonces existe localmente solución del problema de valores iniciales.
+\end{teorema}
+
+Recomiendo en esta parte, ver el ejemplo de Müller de la relación de problemas, ya que las iteradas de Picard no pueden usarse para demostrar este Teorema. Para terminar esta sección de existencia y unicidad de solución local, se deja al lector la demostración de la siguiente consecuencia; usando los resultados previos.
+
+\begin{corollary}
+Si $F : \Omega \subset \mathbb{R}^2 \rightarrow \mathbb{R}$ es estrictamente decreciente respecto a $x$ en un entorno de $(t_0, x_0)$ entonces el problema de valores iniciales tiene una única solución local.
+\end{corollary}
+
+\subsection{Existencia y unicidad de solución global.}
+En esta parte, una vez garantizada la existencia y unicidad de solución local de un problema de valores iniciales PVI, tratamos de abordar el problema de extender dicha solución a una solución maximal, es decir, no puede extenderse.
+
+\begin{definicion}
+Sea $\varphi : I \subset \mathbb{R} \rightarrow \mathbb{R}^n$ una solución del problema de valores iniciales, se dice que $\varphi$ es prolongable si existe otra solución $\tilde{\varphi}: \tilde{I} \subset \mathbb{R} \rightarrow \mathbb{R}^n$ del PVI que satisface:
+\begin{enumerate}
+    \item $I \subset \tilde{I}$ contenido estrictamente.
+    \item $\varphi(t) = \tilde{\varphi}(t)$ para todo $t \in I$.
+\end{enumerate}
+\end{definicion}
+
+\begin{nota}
+  Podemos distinguir entre prolongable a la derecha y a la izquierda.  
+\end{nota}
+
+
+\begin{definicion}
+Una solución $\varphi$ del PVI se llama maximal si no se puede prolongar. El intervalo donde está definida una solución maximal se denomina intervalo maximal de existencia y será denotado por $]\alpha, \omega[$.
+\end{definicion}
+
+\begin{lemma}
+Sea $\varphi : ]a, b[ \subset \mathbb{R} \rightarrow \mathbb{R}^n$ una solución del PVI. Si existe el límite
+\[ \lim_{t\rightarrow b^-} \varphi(t) = \xi \quad \text{con } (b, \xi) \in \Omega, \]
+entonces $\varphi$ se puede prolongar a la derecha. De forma análoga, si existe el límite
+\[ \lim_{t\rightarrow a^+} \varphi(t) = \xi \quad \text{con } (a, \xi) \in \Omega, \]
+entonces $\varphi$ se puede prolongar a la izquierda.
+\end{lemma}
+
+\begin{proof}
+Demostramos solamente el primer caso, puesto que el otro sigue de un razonamiento análogo. Como $(b, \xi) \in \Omega$, planteamos el siguiente PVI $x'(t) = F(t, x(t))$ con valor inicial $x(b) = \xi$. Por el Teorema de Picard-Lindelöf 3.4, existe localmente una única solución $\varphi$ en un entorno de $]b-\epsilon, b+\epsilon[$, para algún $\epsilon > 0$. En particular, $]a, b[ \cap ]b - \epsilon, b + \epsilon[ \ne \emptyset$. Por otro lado, como existe el límite por la derecha de $b$ de la función $\varphi$, se tiene que $\varphi(t) = \varphi(t)$ en $]b - \epsilon, b[$ debido a la unicidad. Por lo tanto, podemos definir la siguiente prolongación $\tilde{\varphi}:]a, b + \epsilon[ \rightarrow \mathbb{R}^n$ dada por
+\[ \tilde{\varphi}(t) = \begin{cases} \varphi(t) & \text{en } ]a, b - \epsilon[ \\ \varphi(t) & \text{en } [b - \epsilon, b + \epsilon[ \end{cases} \]
+\end{proof}
+
+Al lector, se deja la prueba de siguiente resultado. La idea es análoga a la demostración anterior.
+
+\begin{lemma}
+El intervalo maximal de definición en un intervalo abierto.
+\end{lemma}
+
+\begin{proposition}
+Sea $\varphi$ una solución maximal definida en $]\alpha, \omega[$. Si $\omega < +\infty$, entonces se tiene que una de las siguientes alternativas:
+\begin{enumerate}
+    \item $\lim_{t\rightarrow \omega^-} |\varphi(t)| = +\infty$.
+    \item Existe $t_n \subset ]\alpha, \omega[$ tal que $t_n \rightarrow \omega$ y $\varphi(t_n) \rightarrow \xi$ con $(\omega, \xi) \in \partial\Omega$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Supongamos que 2. no ocurre, vamos a demostrar 1. Supongamos pues que para todo sucesión $t_n \subset ]\alpha, \omega[$ convergiendo a $\omega$ con $\varphi(t_n) \rightarrow \xi$ se tiene que $(\omega, \xi) \in \Omega$. En tal caso, $|x_i| = +\infty$ y quedaría probado 1. En caso contrario, si $\xi \in \mathbb{R}$ llegamos a contradicción aplicando el Lema 3.11 ya que podría prolongarse la solución.
+\end{proof}
+
+Finalmente, terminamos este primer capítulo del curso con el siguiente Teorema como consecuencia de los resultados presentados; donde damos condiciones suficientes para garantizar globalmente la existencia y unicidad de solución.
+
+\begin{teorema}[Existencia y unicidad global de solución]
+Si $F$ es continua y localmente Lipschitziana en $\Omega$. Entonces el problema de valores iniciales tiene una única solución maximal.
+\end{teorema}
+
+\chapter{Técnicas de integración para EDOs de primer orden}
+\begin{abstract}
+En este segundo tema, vamos abordar técnicas para resolver casos particulares de EDOs de primer orden: a saber, ecuaciones de variables separadas, homogéneas y exactas. Aparte de probar existencia y unicidad de solución global del problema de valores iniciales PVI asociados, aplicaremos estas técnicas en algunos ejemplos físicos y modelos de crecimiento.
+\end{abstract}
+
+\section{Ecuaciones de variables separadas}
+
+\begin{definicion}
+Una EDO $x^{\prime}(t)=F(t,x(t))$ se dice que es de variables separadas si $F(t,x(t))=h(t)g(x(t))$ donde $h:I\subset\mathbb{R}\rightarrow\mathbb{R}$ y $g: J\subset\mathbb{R}\rightarrow\mathbb{R}$ son funciones continuas definidas en intervalos $I, J$ de $\mathbb{R}$, respectivamente.
+\end{definicion}
+
+El problema de valores iniciales asociado a la ecuación de variables separadas viene dado por
+\[
+\begin{cases}
+x^{\prime}(t)=h(t)g(x(t))\\ 
+x(t_{0})=x_{0},
+\end{cases}
+\]
+con $(t_{0},x_{0})\in I\times J.$ Además, la solución será una función $\varphi:I\rightarrow\mathbb{R}$ donde $\varphi(t_{0})=x_{0}$ que debe verificar $\varphi\in C^{1}(I)$ con $(t,\varphi(t))\in I\times J$ para todo $t\in I.$
+
+Pasamos pues a estudiar la existencia y unicidad de solución, una primera consecuencia que podemos deducir del primer tema del curso es la siguiente:
+
+\begin{lema}
+Si $g$ es una función globalmente Lipschitziana, entonces el PVI admite una única solución maximal.
+\end{lema}
+
+Sin embargo, en este caso tan particular, veremos que, solamente gracias a la continuidad y al Teorema de la función implícita, podemos garantizar localmente la existencia y unicidad de solución del PVI.
+En primer lugar, nótese que si $g(x_{0})=0$ entonces la función $\varphi(t)=x_{0}$ constante es solución del PVI, denominada solución trivial. Nos preguntamos pues, que ocurre si $g(x_{0})\ne0$.
+
+\begin{teorema}
+Si $h,g$ son funciones continuas y $g(x_{0})\ne0$ entonces la ecuación
+\[ \Psi(t,x)=\int_{x_{0}}^{x}\frac{ds}{g(s)}-\int_{t_{0}}^{t}h(s)ds=0 \]
+define implícitamente una función $\varphi:I\rightarrow\mathbb{R}$, en un entorno de $(t_{0},x_{0})$, la cuál es la única solución del PVI.
+\end{teorema}
+
+\begin{proof}
+Considera la función $\Psi:I\times J\rightarrow\mathbb{R}$ definida anteriormente. Nótese que, es de clase $C^{1}$ en un entorno de $(t_{0},x_{0})$ gracias al Teorema Fundamental del Cálculo. Además,
+\[ \frac{\partial\Psi}{\partial x}(t,x)=\frac{1}{g(x)} \quad \text{con} \quad \frac{\partial\Psi}{\partial x}(t_{0},x_{0})\ne0. \]
+Consecuentemente, aplicando el Teorema de la función implícita en un entorno de $(t_{0},x_{0})$ existe una única función de clase $C^{1}$ definida en un entorno de $t_{0}$ tal que $\varphi(t_{0})=x_{0}$ y $\Psi(t,\varphi(t))=0.$ Además,
+\[ \frac{\partial\Psi}{\partial t}(t,\varphi(t))=-\varphi^{\prime}(t)\frac{\partial\Psi}{\partial x}(t,\varphi(t)). \]
+En particular,
+\[ \varphi^{\prime}(t)=h(t)g(\varphi(t)). \]
+y por lo tanto, solución del PVI.
+\end{proof}
+
+Pasamos a ver unos ejemplos de este caso particular de EDOs:
+
+\begin{ejemplo}
+En un entorno sin rozamiento, queremos averiguar la ecuación de movimiento, en cualquier instante de tiempo $t>0,$ de una partícula en caida libre que se deja caer desde una altura inicial $y(0)=y_{0}$ sin velocidad inicial. Gracias a la conservación de la energía, tenemos que
+\[ y^{\prime}(t)=\sqrt{2g(y_{0}-y(t))} \quad \text{con} \quad y(t_{0})=y_{0} \]
+Nótese que este PVI está determinado por una EDO de variables separadas con $h(t)=\sqrt{2g}$ y $g(y(t))=\sqrt{y(t)-y_{0}}.$ Ambas funciones continuas y por lo tanto, tenemos garantizado la existencia de solución. En este caso,
+\[ 0=\Psi(t,y(t))=\int_{y_{0}}^{y}\frac{ds}{\sqrt{s-y_{0}}}-\int_{0}^{t}\sqrt{2g}ds=-2\sqrt{y_{0}-y(t)}-\sqrt{2g}t \]
+Y por lo tanto, recuperamos la ecuación de movimiento de dicha partícula
+\[ y(t)=y_{0}-\frac{1}{2}gt^{2}. \]
+Nótese que, la solución constante $y(t)=t_{0}$ también es solución. Dejo al lector el problema de responder el porqué se pierde la unicidad.
+\end{ejemplo}
+
+\begin{ejemplo}[Ley de Newton de enfriamiento de un cuerpo]
+Se deja al lector encontrar la solución del siguiente PVI:
+\[ T^{\prime}(t)=k(T(t)-T_{m}) \quad \text{con} \quad T(t_{0})=T_{0} \]
+donde $k$ y $T_{m}$ son constantes reales que dependen del cuerpo a considerar.
+\end{ejemplo}
+
+\section{EDOs homogéneas y reducibles a homogéneas}
+Antes de dar la definición de EDO homogénea y de estudiar existencia y solución de la misma, abordamos las fórmulas del cambio de variable de una forma general.
+
+Considera el siguiente PVI $x^{\prime}(t)=F(t,x(t))$ con $x(t_{0})=x_{0}$ y sea $\phi:I\rightarrow J$ un difeomorfismo en $\mathbb{R}$ de un entorno de $t_{0}$ tal que $\overline{t}=\phi(t)$. Nótese que al ser un difeomorfismo, podemos aplicar Teorema de la función inversa para obtener que
+\[ \frac{dt}{d\overline{t}}=\frac{1}{\dot{\phi}(t)} \]
+donde $\dot{(\cdot)}$ representa la derivada respecto de $t$. Como consecuencia, aplicando la regla de la cadena obtenemos
+\[ \frac{d~x(t)}{d\overline{t}}=\frac{d~x(\phi^{-1}(\overline{t}))}{d\overline{t}}=x^{\prime}(\phi^{-1}(\overline{t}))\frac{1}{\dot{\phi}(\phi^{-1}(\overline{t}))}=F(\phi^{-1}(\overline{t}),x(\phi^{-1}(\overline{t})))\frac{1}{\dot{\phi}(\phi^{-1}(\overline{t}))} \]
+con valor inicial $x_{0}=x(\phi^{-1}(\overline{t}_{0}))$. Nótese que, en este caso, hemos realizado un cambiado de variable en el tiempo $t$.
+
+Ahora, vamos a considerar $\phi:\Omega\rightarrow\mathbb{R}^{2}$ en un dominio conteniendo a $(t_{0},x_{0})$ con $\phi=\phi(r,s)$ y el cambio de variable $x(t)=\phi(u(t),t)$. En este caso, aplicando la regla de la cadena obtenemos
+\[ x^{\prime}(t)=\frac{\partial\phi}{\partial r}(u(t),t)u^{\prime}(t)+\frac{\partial\phi}{\partial s}(u(t),t)=F(t,x(t))=F(\phi(u(t),t)) \]
+Por lo tanto, el PVI que verifica la nueva función $u$ viene dado por
+\[ u^{\prime}(t)=\left(\frac{\partial\phi}{\partial r}(u(t),t)\right)^{-1}\left(F(\phi(u(t),t))-\frac{\partial\phi}{\partial s}(u(t),t)\right) \]
+con valor inicial $(u(t_{0}),t_{0})=\phi^{-1}(x(t_{0}),t_{0}).$ Una vez visto, sendos cambios de variable, tanto en la variable $t$ como en la función $x$; estamos ya en condiciones de abordar el problema de estudiar la EDO homogéneas y reducibles a homogéneas.
+
+\begin{definicion}
+Diremos que una EDO $x^{\prime}(t)=F(t,x(t))$ es homogénea si $F(t,x(t))=f(x(t)/t)$ donde $F$ está definida en un dominio $\Omega\subset\{(x,y)\in\mathbb{R}^{2}|t>0\}$ y $f:]a,b[\rightarrow\mathbb{R}$ una función continua.
+\end{definicion}
+
+El motivo de la homogeneidad viene dado gracias al siguiente caso particular: supongamos que tenemos $P,Q:\mathbb{R}^{2}\rightarrow\mathbb{R}$ dos funciones homogéneas del mismo grado $n$, es decir, para cualquier $\lambda\in\mathbb{R}$ se tiene que $P(\lambda t,\lambda x)=\lambda^{n}P(t,x)$ y $Q(\lambda t,\lambda x)=\lambda^{n}Q(t,x)$ para todo $(t,x)\in\mathbb{R}^{2}$. Por lo tanto,
+\[ \frac{P(t,x)}{Q(t,x)}=\frac{t^{n}P(1,x/t)}{t^{n}Q(1,x/t)}=\frac{P(1,x/t)}{Q(1,x/t)}=f\left(\frac{x}{t}\right) \]
+A continuación, pasamos a demostrar la existencia y unicidad de solución local del problema de valores iniciales asociado a una EDO homogénea.
+
+\begin{teorema}
+El PVI $x^{\prime}(t)=f(x/t)$ con $f$ una función continua y valor inicial en $t_{0}>0$ dado por $x(t_{0})=x_{0},$ tiene una única solución local en un entorno de $t_{0}$.
+\end{teorema}
+
+\begin{proof}
+Considera el siguiente cambio de variable $x(t)=u(t)t$ determinado por $\phi(r,s)=rs$ donde $r=u$ y $s=t.$ En particular, tenemos que
+\[ \frac{\partial\phi}{\partial r}(u(t),t)=t \quad \text{y} \quad \frac{\partial\phi}{\partial s}(u(t),t)=u(t). \]
+Como consecuencia, aplicando la fórmula de cambio de variable obtenemos que
+\[ u^{\prime}(t)=\frac{1}{t}(f(u(t))-u(t)). \]
+Por lo tanto, obtenemos una EDO de variables separadas con $h(t)=1/t$ y $g(u(t))=f(u(t))-u(t)$ como ambas son continuas ya que $f$ es continua por hipótesis, podemos aplicar el Teorema 1.3 para garantizar la existencia y unicidad de solución del PVI.
+\end{proof}
+
+Por ejemplo: considera el PVI $x^{\prime}(t)=\frac{x^{2}(t)+t^{2}}{t^{2}}$ en $\{(t,x)\in\mathbb{R}^{2}|t>0\}$ con $x(t_{0})=x_{0}$. Nótese que,
+\[ x^{\prime}(t)=f\left(\frac{x(t)}{t}\right)=1+\left(\frac{x(t)}{t}\right)^{2} \]
+Como $f$ es continua, aplicando el Teorema anterior 2.2, tenemos garantizada la existencia y unicidad de solución local del PVI. Aplicando el cambio de variable, obtenemos el siguiente PVI de variables separadas
+\[ u^{\prime}(t)=\frac{1}{t}(1+u^{2}(t)-u(t)) \quad \text{con} \quad u(t_{0})=\frac{x_{0}}{t_{0}} \]
+Como consecuencia, por el Teorema 1.3, la solución viene implícitamente por
+\[ 0=\Psi(t,u(t))=\int_{x_{0}/t_{0}}^{u}\frac{ds}{1+s^{2}-s}-\int_{t_{0}}^{t}\frac{1}{s}ds. \]
+Se deja al lector la resolución de dicha integral.
+
+\subsection{Ecuaciones reducibles a homogéneas}
+
+\begin{definicion}
+Una EDO se dice que es reducible a homogéneas si es de la forma
+\[ x^{\prime}(t)=f\left(\frac{a_{1}x(t)+b_{1}t+c_{1}}{a_{2}x(t)+b_{2}t+c_{2}}\right) \]
+para $f$ una función continua en dominio tal que $a_{2}x(t)+b_{2}t+c_{2}\ne0$ para todo $t$ y $a_1, a_{2}, b_1, b_2, c_1, c_{2}\in\mathbb{R}$ son constantes reales.
+\end{definicion}
+
+Vamos a suponer que al menos un $c_{1},c_{2}\ne0$, pues en otro caso, si ambas constantes son nulas tenemos simplemente una EDO homogénea y podemos aplicar los mismo argumentos que en el apartado anterior. Analizamos pues los siguientes casos:
+
+\begin{itemize}
+    \item Si las rectas de ecuaciones $a_{1}y+b_{1}x+c_{1}=0$ y $a_{2}y+b_{2}x+c_{2}=0$ no son paralelas, entonces existe un único punto de corte $(\alpha,\beta)\in\mathbb{R}^{2}.$ Haciendo el cambio de variable $\overline{x}=x-\alpha$ y $\overline{t}=t-\beta,$ obtenemos
+    \[ \frac{d\overline{x}(\overline{t})}{d\overline{t}}=x^{\prime}(t)=f\left(\frac{a_{1}\overline{x}+b_{1}\overline{t}+\alpha a_{1}+\beta b_{1}+c_{1}}{a_{2}\overline{x}+b_{2}\overline{t}+\alpha a_{2}+\beta b_{2}+c_{2}}\right) \]
+    donde $\alpha a_{1}+\beta b_{1}+c_{1}=\alpha a_{2}+\beta b_{2}+c_{2}=0$ puesto que es una traslación al origen. En consecuencia,
+    \[ \frac{d\overline{x}(\overline{t})}{d\overline{t}}=f\left(\frac{a_{1}\overline{x}+b_{1}\overline{t}}{a_{2}\overline{x}+b_{2}\overline{t}}\right) \]
+    obteniendo de nuevo una EDO homogénea.
+
+    \item Si las rectas de ecuaciones $a_{1}y+b_{1}x+c_{1}=0$ y $a_{2}y+b_{2}x+c_{2}=0$ son paralelas, entonces existe una constante $r$ tal que $a_{1}=r a_{2}$ y $b_{1}=r b_{2}$. En particular,
+    \[ x^{\prime}(t)=f\left(\frac{a_{1}x(t)+b_{1}t+c_{1}}{a_{2}x(t)+b_{2}t+c_{2}}\right)=f\left(\frac{r(a_{2}x(t)+b_{2}t)+c_{1}}{a_{2}x(t)+b_{2}t+c_{2}}\right). \]
+    Haciendo el cambio de variable $\overline{x}=a_{2}x+b_{2}t$, con $\overline{x}^{\prime}(t)=a_{2}x^{\prime}(t)+b_{2}$, tenemos que
+    \[ \overline{x}^{\prime}(t)=a_{2}f\left(\frac{r\overline{x}(t)+c_{1}}{\overline{x}(t)+c_{2}}\right)+b_{2}. \]
+    Nótese que este es el caso donde, en general, no podemos obtener existencia y unicidad de solución sin la necesidad de añadir una hipótesis adicional. Por ejemplo, si $b_{2}=0$ entonces tenemos una EDO de variables separadas y podemos resolverla usando las técnicas vistas en la sección anterior. En este caso, para garantizar existencia y unicidad de solución gracias al Teorema de Picard-Lindelöf, tendremos que asumir que la siguiente función es Lipschitziana localmente:
+    \[ F(t,\overline{x}(t))=a_{2}f\left(\frac{r\overline{x}(t)+c_{1}}{\overline{x}(t)+c_{2}}\right)+b_{2}. \]
+\end{itemize}
+
+Consecuentemente, del razonamiento anterior junto con el Teorema 2.2, conseguimos el siguiente resultado de existencia y unicidad del PVI asociado a EDOs reducibles a homogéneas.
+
+\begin{teorema}
+Considera el PVI asociado una EDO reducible homogénea dada por
+\[ x^{\prime}(t)=f\left(\frac{a_{1}x(t)+b_{1}t+c_{1}}{a_{2}x(t)+b_{2}t+c_{2}}\right) \]
+para $f$ una función continua en el dominio tal que $a_{2}x(t)+b_{2}t+c_{2}\ne0$ y $a_{1},a_{2},b_{1},b_{2},c_{1},c_{2}\in\mathbb{R}$ son constantes reales. Entonces,
+\begin{enumerate}
+    \item Si $c_{1}=c_{2}=0$ o las rectas de ecuación $a_{1}x+b_{1}t+c_{1}=0$, $a_{2}x+b_{2}t+c_{2}=0$ se cortan en un punto, entonces el PVI asociado tiene una única solución local.
+    \item Si las rectas $a_{1}x+b_{1}t+c_{1}=0$, $a_{2}x+b_{2}t+c_{2}=0$ son paralelas y la función
+    \[ F(t,\overline{x}(t))=a_{2}f\left(\frac{r\overline{x}(t)+c_{1}}{\overline{x}(t)+c_{2}}\right)+b_{2} \]
+    es localmente lipschitziana, entonces el PVI asociado tiene una única solución.
+\end{enumerate}
+\end{teorema}
+
+\section{EDOs exactas}
+
+\begin{definicion}
+Sean $M,N:\Omega\subset\mathbb{R}^{2}\rightarrow\mathbb{R}$ dos funciones continuas definidas en un dominio $\Omega$ de $\mathbb{R}^{2}$ y considera la EDO $M(t,x(t))+N(t,x(t))x^{\prime}(t)=0$ para todo $(t,x(t))\in\Omega$. Se dice que dicha EDO es exacta si existe una función, denominada función potencial, $V:\Omega\rightarrow\mathbb{R}$ de clase $C^{1}(\Omega)$ tal que
+\[ \nabla V=\left(\frac{\partial V(t,x)}{\partial t},\frac{\partial V(t,x)}{\partial x}\right)=(M(t,x),N(t,x)), \]
+donde $\nabla$ es el gradiente usual de $\mathbb{R}^{2}$.
+\end{definicion}
+
+\begin{teorema}
+Sean $M,N: \Omega\subset\mathbb{R}^{2}\rightarrow\mathbb{R}$ dos funciones continuas definidas en un dominio $\Omega$ de $\mathbb{R}^{2}$ y considera la EDO
+\[ M(t,x(t))+N(t,x(t))x^{\prime}(t)=0 \]
+para todo $(t,x(t))\in\Omega$ con $N(t,x(t))\ne0$ para todo $t$. Si $V:\Omega\rightarrow\mathbb{R}$ es una función potencial entonces la ecuación $V(t,x(t))=V(t_{0},x_{0})$ define implícitamente una única función en un entorno de $(t_{0},x_{0})$ que es solución del PVI asociado con condición inicial $x(t_{0})=x_{0}$.
+\end{teorema}
+
+\begin{proof}
+Definimos $\Psi(t,x)=V(t,x)-V(t_{0},x_{0})$ en $\Omega$; claramente es de clase $C^{1}(\Omega)$ con $\Psi(t_{0},x_{0})=0.$ Además, en dicho punto $(t_{0},x_{0})$ tenemos que
+\[ \frac{\partial\Psi(t_{0},x_{0})}{\partial x}=N(t_{0},x_{0})\ne0. \]
+Consecuentemente, por el Teorema de la función implícita existe una única en un entorno de $(t_{0},x_{0})$ de clase $C^{1}(I)$, donde $I$ es un intervalo conteniendo a $t_{0}$ tal que $\varphi(t_{0})=x_{0}$, $\Psi(t,\varphi(t))=0$ para todo $t\in I$ y además
+\[ \frac{\partial\Psi(t,\varphi(t))}{\partial t} = M(t,\varphi(t)) + N(t,\varphi(t))\varphi^{\prime}(t) = 0, \]
+para todo $t\in I$ y por lo tanto, solución del PVI.
+\end{proof}
+
+\begin{ejemplo}
+Considera el siguiente PVI: $2tx(t)^{3}+3t^{2}x(t)^{2}x^{\prime}(t)=0$ en $\Omega=]0,+\infty[\times]0,+\infty[$ con condición inicial $x(1)=1$. Nótese que $M(t,x)=2tx^{3}$ y $N(t,x)=3t^{2}x^{2}$ en $\Omega$ con $N(1,1)\ne0$. Ahora considera $V(t,x)=t^{2}x^{3}$ en $\Omega$, claramente $V\in C^{1}(\Omega)$ con $\nabla V(t,x)=(M(t,x),N(t,x)),$ es decir, $V$ es un potencial y dicha EDO es exacta. Aplicando el Teorema 3.2, tenemos garantizado la existencia y unicidad de solución local en un entorno del punto $(1,1)$. Además, la ecuación $V(t,x)=V(1,1)=1$ define implícitamente dicha solución. En consecuencia, trivialmente tenemos que la solución a dicho PVI viene dada por $\varphi(t)=t^{-2/3}$ en $]0,+\infty[$.
+\end{ejemplo}
+
+\subsection{Existencia de potencial}
+Para garantizar la existencia de potencial, necesitamos previamente introducir un nuevo concepto topológico de conjunto simplemente conexo.
+
+\begin{definicion}
+Un conjunto $\Omega$ es simplemente conexo, si toda curva continua cerrada $\alpha:[0,1]\rightarrow\Omega$ con $\alpha(0)=\alpha(1)$ es homotópica a un punto $p\in\Omega$, es decir, existe una aplicación continua $H:[0,1]\times[0,1]\rightarrow\Omega$ tal que $H(0,t)=\alpha(t)$ y $H(1,t)=p$ para todo $t\in[0,1]$.
+\end{definicion}
+
+Por ejemplo, el espacio Euclídeo $\mathbb{R}^n$ con la topología de la distancia o la esfera $\mathbb{S}^{n}$ son ejemplos de conjuntos simplemente conexos. En general, para un conjunto arbitrario esta propiedad es difícil de comprobar; así pues, intuitivamente diremos que un conjunto es simplemente conexo cuando "no tiene agujeros". Otro ejemplo: al plano $\mathbb{R}^{2}-\{0\}$ al que le quitamos el origen no simplemente conexo. Sin embargo, la esfera menos un punto sigue siendo simplemente conexo.
+
+Otro concepto que necesitamos, es el concepto de rotacional de un campo escalar de $\mathbb{R}^{3}$. A saber,
+
+\begin{definicion}
+Sea $F=(F_{1},F_{2},F_{3}):\Omega\subset\mathbb{R}^{3}\rightarrow\mathbb{R}^{3}$ un campo vectorial en $\Omega$, un dominio de $\mathbb{R}^{3}$, de clase $C^{1}(\Omega)$. Se define el rotacional de $F$ en $\Omega$ al campo
+\[ \text{rot}F=\left(\frac{\partial F_{3}}{\partial y}-\frac{\partial F_{2}}{\partial z},\frac{\partial F_{1}}{\partial z}-\frac{\partial F_{3}}{\partial x},\frac{\partial F_{2}}{\partial x}-\frac{\partial F_{1}}{\partial y}\right). \]
+Usualmente, se denota $\text{rot}(F)$ por $\nabla\wedge F$ donde es el producto exterior de $\mathbb{R}^{3}$.
+\end{definicion}
+
+Pues bien, con estos ingredientes podemos dar condiciones suficientes para garantizar la existencia de potencial para un campo en general de $\mathbb{R}^{3}$.
+
+\begin{teorema}
+Si $F=(F_{1},F_{2},F_{3})$: $\Omega\subset\mathbb{R}^{3}\rightarrow\mathbb{R}^{3}$ es un campo vectorial de clase $C^{1}(\Omega)$ en $\Omega$ un dominio simplemente conexo de $\mathbb{R}^{3}$ con $\text{rot}(F)=0$, entonces existe un campo escalar $V:\Omega\subset\mathbb{R}^{3}\rightarrow\mathbb{R}$ de clase $C^{1}(\Omega)$ tal que $\nabla V=F$, es decir, $V$ es un potencial de $F$.
+\end{teorema}
+
+\begin{proof}
+Sea $U=\Omega\subset\mathbb{R}^{3}$ un abierto simplemente conexo y $F:U\rightarrow\mathbb{R}^{3}$ de clase $C^{1}$ con $\nabla\times F=0$ en $U$. Tenemos que probar que existe $V:U\rightarrow\mathbb{R}$ tal que $\nabla V=F$.
+Fijemos un punto base $x_{0}\in U$. Para cualquier $x\in U$ y cualquier curva suave por tramos $C\subset U$ que vaya de $x_{0}$ a $x$, definimos
+\[ V(x):=\oint_{C}F\cdot dr. \]
+Queremos ver en primer lugar, la buena definición de $V$, es decir que $V$ no depende de la elección de $C$. Sean $C_{1}$ y $C_{2}$ dos curvas de $x_{0}$ a $x$. Consideremos el lazo cerrado $C=C_{1}\cup(-C_{2})$. Por el Teorema de Stokes, si $S\subset U$ es una superficie orientable con borde $\partial S=C$, se tiene
+\[ \oint_{C}F\cdot dr=\iint_{S}(\nabla\times F)dS=0, \]
+pues $\nabla\times F=0$. La existencia de dicha superficie $S\subset U$ se garantiza porque $U$ es simplemente conexo. Por tanto,
+\[ \int_{C_{1}}F\cdot dr=\int_{C_{2}}F\cdot dr, \]
+y $V$ queda bien definida. Demostramos ahora que $\nabla V=F.$ Fijemos $x\in\Omega$, $i\in\{1,2,3\}$. Para $h$ suficientemente pequeño, consideremos el segmento
+\[ \sigma_{h}(t)=x+the_{i}, \quad t\in[0,1] \]
+que está contenido en $\Omega$. Por la definición de $V$, tenemos que
+\[ V(x+he_{i})-V(x)=\int_{\sigma_{h}}F\cdot dr=\int_{0}^{1}F(x+the_{i})\cdot(he_{i})dt=h\int_{0}^{1}F_{i}(x+the_{i})dt. \]
+Dividiendo entre $h$ y tomando el límite cuando $h\rightarrow0$, usando la continuidad de $F_{i}$,
+\[ \partial_{x_{i}}V(x)=\lim_{h\rightarrow0}\frac{V(x+he_{i})-V(x)}{h}=F_{i}(x). \]
+Esto vale para cualquier $i=1,2,3$, luego $\nabla V(x)=F(x), \forall x\in\Omega$.
+\end{proof}
+
+Para el lector se deja la prueba del recíproco, es decir, probar que si $F$ es un campo vectorial de $\mathbb{R}^{3}$ y $V$ es un potencial de $F$, entonces $\text{rot}(F)=0$.
+
+En nuestro caso, gracias al Teorema anterior, si tenemos la EDO $M(t,x)+N(t,x)x^{\prime}(t)=0$ con $M, N$ de clase $C^{1}(\Omega)$ en $\Omega$ un dominio simplemente conexo, entonces dicha EDO es exacta si y sólo si
+\[ \frac{\partial M(t,x)}{\partial x}=\frac{\partial N(t,x)}{\partial t}\forall(t,x)\in\Omega. \]
+Esta propiedad se prueba fácilmente considerando el campo $F(t, x,z) = (M(t, x), N(t, x), 0)$ en $\Omega\times\mathbb{R}$. Sin embargo, gracias a que dichos campos $M, N$ están definidos en un subconjunto $\mathbb{R}^{2}$ podemos eliminar la hipótesis 'ser simplemente conexo'. Es decir,
+
+\begin{teorema}
+Supongamos que $M, N:\Omega\subset\mathbb{R}^{2}\rightarrow\mathbb{R}$ son funciones de clase $C^{1}(\Omega)$ en un dominio $\Omega$. Entonces la EDO $M(t,x(t))+N(t,x(t))x^{\prime}(t)=0$ es exacta si y sólo si se verifica
+\[ \frac{\partial M(t,x)}{\partial x}=\frac{\partial N(t,x)}{\partial t}\forall(t,x)\in\Omega. \]
+\end{teorema}
+
+\begin{proof}
+Supongamos que dicha EDO es exacta, entonces existe una función potencial $V$ tal que
+\[ \frac{\partial V(t,x)}{\partial t}=M(t,x) \quad \text{y} \quad \frac{\partial V(t,x)}{\partial x}=N(t,x). \]
+Como $M, N$ son de clase $C^{1}$ en $\Omega$, entonces $V$ es de clase $C^{2}$ en $\Omega$ y la primera implicación sigue del Teorema de las derivadas cruzadas de Schwartz. Recíprocamente, supongamos que
+\[ \frac{\partial M(t,x)}{\partial x}=\frac{\partial N(t,x)}{\partial t}\forall(t,x)\in\Omega. \]
+Entonces, salvo constante, podemos definir la siguiente función en $V(t,x)=\int M(t,x)dt+h(x),$ donde $h$ es una función diferenciable con derivada
+\[ h^{\prime}(x)=N(t,x)-\frac{\partial}{\partial x}\left(\int M(t,x)dt\right). \]
+En consecuencia, $V$ viene dada por
+\[ V(t,x)=\int M(t,x)dt+\int\left(N(t,x)-\frac{\partial}{\partial x}\int M(t,x)dt\right)dx+C, \]
+donde $C$ es una constante real. Nótese que $V$ es de clase $C^{1}$ en por el Teorema Fundamental del Cálculo. Además,
+\[ \frac{\partial V(t,x)}{\partial t}=M(t,x)+\int\left(\frac{\partial N(t,x)}{\partial t}-\frac{\partial M(t,x)}{\partial x}\right)dx=M(t,x) \]
+y de igual forma, $\frac{\partial V(t,x)}{\partial x}=N(t,x).$ Por lo tanto, $V$ es una función potencial y en consecuencia, dicha EDO es exacta como queríamos demostrar.
+\end{proof}
+
+\subsection{Factor integrante}
+Supongamos ahora que tenemos una EDO de la forma $M(t,x(t))+N(t,x(t))x^{\prime}(t)=0$ en $\Omega$ con $M,N:\Omega\subset\mathbb{R}^{2}\rightarrow\mathbb{R}$ de clase $C^{1}(\Omega)$ y además, existe un punto tal que
+\[ \frac{\partial M(t,x)}{\partial x}\ne\frac{\partial N(t,x)}{\partial t}. \]
+En consecuencia, dicha EDO no es exacta por el Teorema 3.6. El objetivo de esta parte, será encontrar una función $\mu:\Omega\rightarrow\mathbb{R}$ tal que, la siguiente EDO
+\[ \mu(t,x(t))(M(t,x(t))+N(t,x(t))x^{\prime}(t))=0 \]
+sí sea una EDO exacta. En tal caso, diremos que es un factor integrante. En primer lugar, se deja al lector la demostración de la siguiente propiedad:
+
+\begin{proposicion}
+Si $\mu(t,x)\ne0$ para todo $(t,x)\in\Omega$, entonces las ecuaciones $M(t,x(t))+N(t,x(t))x^{\prime}(t)=0$ y $\mu(t,x(t))(M(t,x(t))+N(t,x(t))x^{\prime}(t))=0$ tienen exactamente las mismas soluciones.
+\end{proposicion}
+
+A continuación, damos condiciones suficientes para garantizar la existencia de factor integrante.
+
+\begin{proposicion}
+Sea la ecuación $M(t,x(t))+N(t,x(t))x^{\prime}(t)=0$ con $M, N \in C^{1}(\Omega)$ y $N(t,x(t))\ne0$. Si dicha EDO tiene una solución $\varphi(t,x(t))=0$ (en forma implícita) con de clase $C^{2}(\Omega)$ y tal que $\frac{\partial\varphi(t,x)}{\partial x}\ne0,$ entonces existe factor integrante.
+\end{proposicion}
+
+\begin{proof}
+Si $\varphi(t,x(t))=0$ en $\Omega$, entonces por la Regla de la cadena, obtenemos
+\[ \frac{\partial\varphi(t,x(t))}{\partial t}+\frac{\partial\varphi(t,x(t))}{\partial x}x^{\prime}(t)=0. \]
+En consecuencia, en el dominio $\Omega$ obtenemos
+\[ -\frac{\frac{\partial\varphi(t,x)}{\partial t}}{\frac{\partial\varphi(t,x)}{\partial x}}=-\frac{M(t,x(t))}{N(t,x(t))} \]
+Defino ahora la función $\mu : \Omega \rightarrow \mathbb{R}$ de clase $C^1(\Omega)$ dada por
+\[ \mu(t, x) = \frac{\frac{\partial\varphi(t,x)}{\partial x}}{N(t, x(t))}. \]
+Gracias al Teorema de las derivadas cruzadas de Schwartz, obtenemos
+\[ \frac{\partial^2\varphi(t, x)}{\partial t\partial x} = \frac{\partial(\mu M)(t, x)}{\partial x} = \frac{\partial^2\varphi(t, x)}{\partial x\partial t} = \frac{\partial(\mu N)(t, x)}{\partial t}. \]
+En particular, la EDO $(\mu M)(t, x(t)) + (\mu N)(t, x(t))x^{\prime}(t) = 0$ en $\Omega$ es exacta y por lo tanto, $\mu$ es un factor integrante.
+\end{proof}
+
+Este resultado, nos garantiza la existencia de solución de la siguiente ecuación diferencial en derivadas parciales; las cuales no son objetivo de estudio de este curso.
+\[ \frac{\partial(\mu M)(t, x)}{\partial x} - \frac{\partial(\mu N)(t, x)}{\partial t} = 0. \]
+Sin embargo, sí que podemos analizar algunos casos particulares. En concreto:
+\begin{itemize}
+    \item Si $\mu = \mu(t)$ con $N \ne 0$ en $\Omega$, entonces para que sea exacta tiene que verificar
+    \[ \mu^{\prime}(t) = \mu(t)\frac{1}{N}\left(\frac{\partial M}{\partial x}-\frac{\partial N}{\partial t}\right) = h(t)g(\mu), \]
+    convirtiéndose en una EDO de variables separadas.
+    \item De igual forma, si $\mu = \mu(x)$ con $M \ne 0$ en $\Omega$, entonces $\mu$ satisface
+    \[ \mu^{\prime}(t) = -\mu(t)\frac{1}{M}\left(\frac{\partial M}{\partial x}-\frac{\partial N}{\partial t}\right) = h(t)g(\mu), \]
+    de nuevo una EDO de variables separadas.
+\end{itemize}
+
+Para finalizar este tema, se deja al lector los siguientes casos particulares: $\mu = \mu(t + x)$, $\mu = \mu(tx)$, $\mu = \mu(t^2 + x^2)$.
+
+\begin{ejemplo}
+Considera la EDO $(t + 1)^2 + (1 + t^2) x^{\prime}(t) = 0$ en $\mathbb{R}^2$ con $M(t, x) = (t + 1)^2$ y $N(t, x) = 1 + t^2$. Nótese que
+\[ \frac{\partial M}{\partial x} = 0 \ne \frac{\partial N}{\partial t} = 2t \quad \text{en } \mathbb{R}^2. \]
+Por lo tanto no es exacta. Intentamos dar un ejemplo del caso anterior buscando un factor integrante de la forma $\mu = \mu(t + x)$ con el cambio de variable $t+x = s$, es decir, $\mu = \mu(s) = \mu(t+x)$. De la ecuación para ser factor integrante
+\[ \frac{\partial\mu}{\partial x}M +\frac{\partial M}{\partial x} \mu =\frac{\partial\mu}{\partial t} N +\frac{\partial N}{\partial t} \mu, \]
+deducimos que $\mu$ tiene que satisfacer
+\[ \mu^{\prime}(s)M = \mu^{\prime}(s)N + 2t\mu(s). \]
+En particular, $2t\mu = 2t\mu^{\prime}$ en todo $\mathbb{R}^2$, y por lo tanto $\mu = e^s = e^{t+x}$. Así pues, la EDO
+\[ e^{t+x}(1 + t)^2 + e^{t+x}(1 + t^2) x^{\prime}(t) = 0, \]
+es exacta con potencial $V (t, x) = e^{t+x}(1 + t^2) + C$, para cierta constante real $C \in \mathbb{R}$.
+\end{ejemplo}
+
+\chapter{Ecuaciones Diferenciales de Primer Orden}
+
+\begin{abstract}
+En este tercer tema, abordamos el estudio de un caso muy especial de EDO, denominada ecuación diferencial lineal de primer orden. Aparte de garantizar la existencia y unicidad de solución del PVI asociado, estudiaremos distintos métodos de resolución de las mismas como el método de variación de constantes, de hecho, gracias a la resolución de las EDOs lineales podremos resolver las ecuaciones de Bernoulli y Riccati.
+\end{abstract}
+
+\section{Ecuación diferencial lineal de primer orden}
+
+\begin{definicion}
+Sean $a, b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ dos funciones continuas definidas en un intervalo $I$ de números reales. Una EDO de la forma $x^{\prime}(t)=a(t)x(t)+b(t)$ en $\mathbb{R}^{2}$ se denomina ecuación diferencial lineal de primer orden. Si $b(t)=0$ para todo $t\in I$, entonces se denominará ecuación diferencial homogénea.
+\end{definicion}
+
+Nótese que de la linealidad de la ecuación junto con los Ejercicios 8 y 14 de la relación de problemas del Tema 1, podemos enunciar el siguiente resultado:
+
+\begin{teorema}
+El problema de valores iniciales asociado a una EDO lineal de primer orden tiene una única solución definida globalmente en el intervalo $I$.
+\end{teorema}
+
+Ahora ponemos nuestra atención en la EDO lineal homogénea de primer orden. Claramente, está determinada por una EDO de variables separadas. Por lo tanto, si planteamos el siguiente PVI:
+\[ x^{\prime}(t)=a(t)x(t) \quad \text{con} \quad x(t_{0})=x_{0} \]
+se deja al lector la demostración de que la solución a dicho PVI viene dada por
+\[ x(t)=x_{0}e^{\left(\int_{t_{0}}^{t}a(s)ds\right)} \]
+Por ejemplo, considera el PVI dado por $x^{\prime}(t)=\sin(t)x(t)$ con condición inicial $x(0)=x_{0}$. Nótese que es una EDO lineal homogénea de primer grado y por lo tanto, del Teorema de existencia y unicidad 1.2, tenemos garantiza la existencia y unicidad global de solución. Finalmente, la solución viene dada por
+\[ x(t) = x_0 e^{\cos(t)-1} \quad \forall t \in \mathbb{R}. \]
+
+\begin{proposicion}
+El conjunto $\mathcal{Z}_{h}$ de todas las soluciones de una EDO lineal homogénea es un espacio vectorial de dimensión 1.
+\end{proposicion}
+
+\begin{proof}
+Sean $x_{1}, x_{2}\in\mathcal{Z}_{h}$ dos soluciones cualesquiera y considera $\lambda,\mu\in\mathbb{R}$ números reales cualesquiera. Tenemos que ver si $\lambda x_{1}+\mu x_{2}\in\mathcal{Z}_{h}$. Como la derivabilidad está garantizada, tenemos que
+\[ (\lambda x_{1}(t)+\mu x_{2}(t))^{\prime}=\lambda x_{1}^{\prime}(t)+\mu x_{2}^{\prime}(t) = \lambda a(t)x_{1}(t)+\mu a(t)x_{2}(t)=a(t)(\lambda x_{1}(t)+\mu x_{2}(t)). \]
+Por otro lado, tenemos que ver si la dimensión de $\mathcal{Z}_{h}$ es 1; es decir, tenemos que probar que para cualquier $x\in\mathcal{Z}_{h}$ existe una constante $k\in\mathbb{R}$ tal que $x(t)=k x_{1}(t)$ para $x_{1}$ una solución no nula de $\mathcal{Z}_{h}$. Equivalentemente, tenemos que demostrar si
+\[ \left(\frac{x(t)}{x_{1}(t)}\right)^{\prime}=0. \]
+Como $x, x_{1}\in\mathcal{Z}_h$ entonces $x^{\prime}(t)=a(t)x(t)$ y $x_{1}^{\prime}(t)=a(t)x_{1}(t)$, entonces
+\[ x^{\prime}(t)x_{1}(t)-x(t)x_{1}^{\prime}(t)=a(t)x(t)x_{1}(t)-a(t)x_{1}(t)x(t)=0 \]
+como queríamos demostrar.
+\end{proof}
+
+\begin{proposicion}
+El conjunto $\mathcal{Z}$ de soluciones de una EDO lineal no homogénea es un espacio afín asociado a $\mathcal{Z}_{h}$. En particular, la solución de una EDO lineal de primer orden no homogénea viene dada por
+\[ x(t)=x_{h}(t)+x_{p}(t), \]
+donde $x_{h}\in\mathcal{Z}_{h}$ y $x_{p}\in\mathcal{Z}$ es una solución particular.
+\end{proposicion}
+
+\begin{proof}
+Sea $x_{p}\in\mathcal{Z}$ una solución particular, considera $x_{1},x_{2}\in \mathcal{Z}$ cualesquiera. Entonces, fácilmente se puede comprobar que $x_{1}-x_{2}\in \mathcal{Z}_{h}$. Finalmente, si $x_{h}\in\mathcal{Z}_{h}$ entonces $x=x_{h}+x_{p}$ es solución de la EDO lineal no homogénea. Efectivamente, como $x$ es diferenciable, se tiene que
+\[ x^{\prime}(t)=x_{h}^{\prime}(t)+x_{p}^{\prime}(t)=a(t)x_{h}(t)+a(t)x_{p}(t)+b(t)=a(t)(x_{h}(t)+x_{p}(t))+b(t), \]
+como queríamos demostrar.
+\end{proof}
+
+En consecuencia, como sabemos resolver EDO lineales homogéneas, el objetivo será encontrar una solución particular de la ecuación diferencial no homogénea.
+
+\subsection{Método de variación de constantes de Lagrange}
+Considera $x(t)=K(t)x_{h}(t)$ una solución de la EDO lineal homogénea con
+\[ x_{h}(t)=e^{\left(\int a(t)dt\right)}. \]
+La idea es considerar que la constante $K=K(t)$ es una función diferenciable de $t$ e imponemos que sea solución $x\in\mathcal{Z}$
+\[ x^{\prime}(t)=K^{\prime}(t)e^{\left(\int a(t)dt\right)}+a(t)e^{\left(\int a(t)dt\right)}K(t)=a(t)e^{\left(\int a(t)dt\right)}K(t)+b(t). \]
+En consecuencia,
+\[ K^{\prime}(t)=b(t)e^{-\left(\int a(t)dt\right)} \]
+Resolviendo dicha EDO, podemos calcular en $K$ obteniendo la siguiente igualdad:
+\[ K(t)=\int b(t)e^{-\left(\int a(t)dt\right)}dt+C, \]
+donde $C$ es una constante real. Finalmente,
+\[ x(t)=Ce^{\left(\int a(t)dt\right)}+e^{\left(\int a(t)dt\right)}\left(\int b(t)e^{-\left(\int a(t)dt\right)}dt\right). \]
+
+\begin{teorema}[Fórmula de variación de constantes]
+El problema de valores iniciales $x^{\prime}(t)=a(t)x(t)+b(t)$, con $a,b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas, y valores iniciales $x(t_{0})=x_{0},$ tiene una única solución global definida por
+\[ x(t)=x_{0}e^{\left(\int_{t_{0}}^{t}a(s)ds\right)}+e^{\left(\int_{t_{0}}^{t}a(s)ds\right)}\left(\int_{t_{0}}^{t}b(s)e^{-\left(\int_{t_{0}}^{s}a(r)dr\right)}ds\right). \]
+\end{teorema}
+
+Otra forma de obtener la fórmula de variación de constantes es la siguiente:
+De nuevo, vamos a considerar el problema de valores iniciales asociado a una EDO lineal de primer orden $x^{\prime}(t)=a(t)x(t)+b(t)$ con valor inicial $x(t_{0})=x_{0}$ y funciones $a, b: I \subset \mathbb{R} \rightarrow \mathbb{R}$ continuas. En primer lugar, multiplicamos ambos miembros de la igualdad por
+\[ e^{-\int_{t_{0}}^{t}a(s)ds} \]
+En consecuencia,
+\[ e^{-\int_{t_{0}}^{t}a(s)ds}x^{\prime}(t)-a(t)x(t)e^{-\int_{t_{0}}^{t}a(s)ds}=e^{-\int_{t_{0}}^{t}a(s)ds}b(t). \]
+Por otro lado, observamos que
+\[ \frac{d}{dt}\left(x(t)e^{-\int_{t_{0}}^{t}a(s)ds}\right)=e^{-\int_{t_{0}}^{t}a(s)ds}x^{\prime}(t)-a(t)x(t)e^{-\int_{t_{0}}^{t}a(s)ds}. \]
+Por lo tanto,
+\[ \frac{d}{dt}\left(x(t)e^{-\int_{t_{0}}^{t}a(s)ds}\right)=e^{-\int_{t_{0}}^{t}a(s)ds}b(t). \]
+Integrando en ambos lados de la igualdad, deducimos de nuevo la fórmula de variación de constantes, a saber
+\[ x(t)e^{-\int_{t_{0}}^{t}a(s)ds}=x_{0}+\int_{t_{0}}^{t}\left(b(s)e^{-\int_{t_{0}}^{s}a(r)dr}\right)ds. \]
+
+\subsection{Método del factor integrante}
+Consideramos de nuevo una EDO lineal de primer orden; pero ahora reescrita de la siguiente forma:
+\[ (a(t)x(t)+b(t)) - x^{\prime}(t) = 0. \]
+La idea consiste en probar que la función
+\[ \mu(t,x)=\mu(t)=e^{-\int_{t_{0}}^{t}a(s)ds}, \]
+es un factor integrante de dicha ecuación. En efecto, considera las funciones
+\[ M(t, x) = -(a(t)x(t) +b(t))e^{-\int_{t_0}^t a(s) ds} \quad \text{y} \quad N(t,x) = e^{-\int_{t_0}^t a(s) ds} \]
+ambas funciones de clase $C^{1}$ gracias al Teorema Fundamental del Cálculo. Por otro lado,
+\[ \frac{\partial M}{\partial x}(t,x) = -a(t)e^{-\int_{t_{0}}^{t}a(s)ds} = \frac{\partial N}{\partial t}(t,x). \]
+Como consecuencia, la siguiente EDO $M(t,x)+N(t,x)x^{\prime}(t)=0$ es exacta y la solución viene dada en forma implícita por la ecuación
+\[ V(t,x)=V(t_{0},x_{0}), \]
+donde $V$ es la función potencial asociada.
+
+Por ejemplo: vamos a resolver el siguiente PVI
+\[ x^{\prime}(t)=\frac{2}{t}x(t)+2t \quad \text{con} \quad x(1)=1 \quad \text{en} \quad \Omega=]0, +\infty[\times\mathbb{R}. \]
+En este caso, el factor integrante viene dado por
+\[ \mu = \mu(t) = e^{-\int \frac{2}{t} dt} = t^{-2}. \]
+En consecuencia, la siguiente EDO es exacta:
+\[ M(t,x(t))+N(t,x(t))x^{\prime}(t)=0 \]
+donde $M, N:\Omega\rightarrow\mathbb{R}$ son funciones de clase $C^{1}(\Omega)$ dados por
+\[ M(t,x)=-\frac{2x}{t^{3}}-\frac{2}{t}, \quad N(t,x)=\frac{1}{t^{2}} \]
+(Nota: Multiplicando la ecuación original $x' - \frac{2}{t}x - 2t = 0$ por $\mu = -t^{-2}$ para ajustar al ejemplo).
+Finalmente, la solución del PVI viene dada implícitamente por la ecuación
+\[ V(t,x)=V(1,1) \]
+donde $V$ es la función potencial asociada dada por
+\[ V(t,x)=\frac{x}{t^{2}}-\ln(t^{2}) \quad \text{en} \quad \Omega. \]
+En particular, podemos ver fácilmente que la solución es
+\[ x(t)=t^2(2\ln(t) + 1). \]
+Se deja al lector el ejercicio de buscar esta solución usando el método de variación de constantes.
+
+\section{Ecuación de Bernoulli}
+
+\begin{definicion}
+Sea $\alpha\in\mathbb{R}\setminus\{0,1\}$ y $a,b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas definidas en un intervalo $I$. Diremos que una EDO es de Bernoulli si está definida por $x^{\prime}(t)=a(t)x(t)+b(t)x^{\alpha}(t)$ para todo $t\in I.$
+\end{definicion}
+
+Nótese que el caso $\alpha\in\{0,1\}$ dicha EDO sería de variables separadas y tendríamos garantizada la existencia y unicidad de solución del problema de valores asociado. Por otro lado, si $\alpha>0,$ una solución de dicha EDO sería la trivial $x(t)=0$ para todo $t\in I.$ Por lo tanto, nos centramos en buscar soluciones no triviales de la EDO de Bernoulli.
+
+Supongamos que tenemos el PVI asociado con condición inicial $x(t_{0})=x_{0}\ne 0$. Entonces en un entorno de $t_{0}$ podemos suponer que $x(t)\ne0$. En dicho entorno, realizamos el siguiente cambio de variable
+\[ u(t)=\frac{1}{x^{\alpha-1}(t)} = x^{1-\alpha}(t) \]
+De la derivabilidad de la solución $x(t)$, deducimos que $u$ es derivable con
+\[ u^{\prime}(t)=(1-\alpha)x(t)^{-\alpha}x^{\prime}(t)=(1-\alpha)x(t)^{-\alpha}(a(t)x(t)+b(t)x^{\alpha}(t)). \]
+En consecuencia, si definimos
+\[ A(t)=(1-\alpha)a(t) \quad \text{y} \quad B(t)=(1-\alpha)b(t), \]
+deducimos fácilmente que
+\[ u^{\prime}(t)=A(t)u(t)+B(t), \]
+obteniendo una EDO lineal de primer orden. Del Teorema 1.2, tenemos garantizada la existencia de solución $u(t)$ del PVI asociado con condición inicial $u(t_{0})=x_{0}^{1-\alpha}$ en todo el entorno de $t_{0}$ donde $x(t)\ne0.$
+
+\begin{teorema}
+El PVI dado por $x^{\prime}(t)=a(t)x(t)+b(t)x^{\alpha}(t)$ con condición inicial $x(t_{0})=x_{0}\ne0$, $\alpha\in\mathbb{R}\setminus\{0,1\}$ y $a,b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas en un intervalo $I$, tiene una única solución local dada por
+\[ x(t)=u(t)^{\frac{1}{1-\alpha}} \]
+donde $u$ es la solución de la EDO lineal de primer orden $u^{\prime}(t)=A(t)u(t)+B(t)$ con condición inicial $u(t_{0})=x_{0}^{1-\alpha}$.
+\end{teorema}
+
+Por ejemplos, considera el PVI dado por
+\[ x^{\prime}(t)=\frac{1}{3t}x(t)+\frac{1}{3}t^{2}x(t)^{-2}, \quad \text{con} \quad x(1)=1. \]
+Nótese que, dicha EDO es de Bernoulli y por lo tanto, aplicando el Teorema de existencia y unicidad local 2.2 tenemos garantizada la existencia y unicidad de solución en un entorno de la condición inicial. Considera ahora el siguiente PVI determinado por la siguiente EDO lineal de primer orden
+\[ u^{\prime}(t)=\frac{1}{t}u(t)+t^{2} \quad \text{con} \quad u(1)=1. \]
+Usando el método de variación de constantes, tenemos que la solución viene dada por
+\[ u(t)=\frac{1}{2}t(1+t^{2}). \]
+En consecuencia, la solución a nuestro PVI de partida viene dado por
+\[ x(t)=\sqrt[3]{\left(\frac{1}{2}t(1+t^{2})\right)}. \]
+
+\section{Ecuación de Riccati}
+
+\begin{definicion}
+Sean $a, b, c:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas en un intervalo $I$. Diremos que una EDO es de Riccati si es de la forma $x^{\prime}(t)=a(t)x(t)+b(t)+c(t)x(t)^{2}$ para todo $t\in I$.
+\end{definicion}
+
+De igual forma que en el caso anterior, si la función $b$ es constantemente cero, de nuevo obtenemos la solución trivial. En este caso, para encontrar soluciones no triviales necesitamos conocer previamente una solución particular de dicha EDO $x_{1}=x_{1}(t)$ para todo $t\in I.$ Una vez conocida, realizamos el siguiente cambio de variable
+\[ u(t)=\frac{1}{x(t)-x_{1}(t)}, \]
+en un entorno de una condición inicial $x(t_{0})=x_{0}\ne x_{1}(t_{0})$. De la derivabilidad de la solución, obtenemos
+\[ u^{\prime}(t)=\frac{x_{1}^{\prime}(t)-x^{\prime}(t)}{(x(t)-x_{1}(t))^{2}}=-\frac{a(t)}{x(t)-x_{1}(t)}-c(t)\frac{x_{1}(t)+x(t)}{x(t)-x_{1}(t)}. \]
+Como,
+\[ x(t)=x_{1}(t)+\frac{1}{u(t)}. \]
+obtenemos que $u$ verifica la siguiente EDO lineal de primer orden
+\[ u^{\prime}(t)=-\frac{a(t)+2x_{1}(t)}{x(t)-x_{1}(t)}-c(t)=-(a(t)+2c(t)x_{1}(t))u(t)-c(t). \]
+(Nota: Se ha corregido la expresión derivada para coincidir con la definición de Riccati).
+Y de igual forma que en el caso anterior, gracias al Teorema 1.2, tenemos garantizada la existencia y unicidad de solución en el entorno de la condición inicial.
+
+\begin{teorema}
+Sea $x_{1}$ una solución de la EDO de Riccati $x^{\prime}(t)=a(t)x(t)+b(t)+c(t)x(t)^{2}$ con $a,b,c:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas para todo $t\in I.$ Entonces el PVI asociado a dicha EDO con condición inicial $x(t_{0})=x_{0}\ne x_{1}(t_{0})$ tiene una única solución local en un entorno de la condición inicial dada por
+\[ x(t)=x_{1}(t)+\frac{1}{u(t)}, \]
+donde $u$ es solución del PVI asociado a la siguiente EDO lineal de primer orden
+\[ u^{\prime}(t)=-(a(t)+2c(t)x_{1}(t))u(t)-c(t) \quad \text{con} \quad u(t_{0})=\frac{1}{x_{0}-x_{1}(t_{0})}. \]
+\end{teorema}
+
+\chapter{Ecuaciones diferenciales lineales de orden superior}
+\section{Breve introducción al análisis matricial}
+
+Sea $\mathcal{M}_{n\times m}(\mathbb{R})$ el conjunto de matrices de orden $n\times m$ con coeficientes reales. Si $A\in\mathcal{M}_{n\times m}(\mathbb{R})$, vamos a definir la siguiente norma
+\[ ||A||=\sup_{|x|<1}\{|Ax|:x\in\mathbb{R}^{m}\}, \]
+donde $||\cdot||$ será una de las normas $||\cdot||_{1},||\cdot||_{2}$ y $||\cdot||_{\infty}$.
+
+\begin{nota}
+Recordad que al ser un espacio de dimensión finita entonces todas las normas son equivalentes.
+\end{nota}
+
+Por otro lado, vamos a definir una derivada para el conjunto de matrices cuyos coeficientes sean funciones derivables en el siguiente sentido; supongamos que $a_{ij}:I\subset\mathbb{R}\rightarrow\mathbb{R}$ es una colección de $n\times m$ funciones de clase $C^{1}(I)$ todas ellas, $i\in\{1,\dots,n\}$ y $j\in\{1,\dots,m\}$. Definamos $A:I\subset\mathbb{R}\rightarrow\mathcal{M}_{n\times m}(\mathbb{R})$ dada por $(A(t))_{ij}=a_{ij}(t)$ para todo $t\in I.$ Entonces, definimos la derivada de esta aplicación por $A^{\prime}:I\rightarrow\mathcal{M}_{n\times m}(\mathbb{R})$ dada por
+\[ (A'(t))_{ij} = a'_{ij}(t) \quad \forall t \in I. \]
+Es decir, estamos derivando componente a componente la matriz de coeficientes $(A(t))_{ij}=a_{ij}(t).$ Nótese que al ser una derivada, debe de satisfacer la regla de Leibniz y cuya comprobación se deja como ejercicio.
+
+\begin{lema}
+Si $A:I\rightarrow\mathcal{M}_{n\times m}(\mathbb{R})$ y $B:I\rightarrow\mathcal{M}_{m\times s}(\mathbb{R})$ son aplicaciones de matrices con coeficientes derivables, entonces la aplicación $AB:I\rightarrow\mathcal{M}_{n\times s}(\mathbb{R})$ dada por $AB(t)=A(t)B(t)$ para todo $t\in I$, es derivable y satisface la regla de Leibniz
+\[ (A(t)B(t))^{\prime}=A^{\prime}(t)B(t)+A(t)B^{\prime}(t). \]
+\end{lema}
+
+Además, se satisface las siguientes propiedades recogidas en el siguiente Lema.
+
+\begin{lema}
+En las condiciones del Lema anterior, se satisfacen las siguientes propiedades:
+\begin{enumerate}
+    \item $(A(t)+B(t))^{\prime}=A^{\prime}(t)+B^{\prime}(t) \quad \forall t\in I.$
+    \item Si $A$ tiene inversa, entonces $A$ es derivable con $(A^{-1}(t))^{\prime}=-A^{-1}(t)A^{\prime}(t)A^{-1}(t).$
+    \item Si $v\in\mathbb{R}^{m}$ y llamamos a la matriz $A_{i}(t)(v)$ a la matriz resultante de intercambiar la fila i-ésima por los elementos del vector $v$, entonces se tiene que
+    \[ (det(A(t)))^{\prime}=\sum_{i=1}^{n}det(A_{i}(t)(a_{i1}^{\prime}(t)\dots a_{im}^{\prime}(t))) \quad \forall t\in I. \]
+\end{enumerate}
+\end{lema}
+
+Ahora, vamos a definir la integral de una aplicación matricial. Considera $a_{ij}:I\rightarrow\mathbb{R}$ una colección de funciones integrables con $i\in\{1,\dots,n\}$ y $j\in\{1,\dots,m\}$ entonces definimos la integral de $A:I\rightarrow\mathcal{M}_{n\times m}(\mathbb{R})$ por la matriz de orden $n\times m$ con coeficientes
+\[ \left(\int_{I}A(t)dt\right)_{ij}=\int_{I}a_{ij}(t)dt \quad \forall i\in\{1,\dots,n\}, \forall j\in\{1,\dots,m\}. \]
+Con esta definición de integral, si consideramos la norma $||\cdot||:\mathcal{M}_{n\times m}(\mathbb{R})\rightarrow\mathbb{R}$ definida previamente, se tiene la siguiente desigualdad:
+\[ \left|\left|\int_{I}A(t)dt\right|\right|\le\int_{I}||A(t)||dt. \]
+
+\section{Ecuación diferencial lineal de orden superior}
+
+\begin{definicion}
+Sea $a_{i}:I\subset\mathbb{R}\rightarrow\mathbb{R}$ funciones continuas en un intervalo $I$ para todo $i\in\{1,2,\dots,n\}$ y considera $b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ otra función continua en el mismo intervalo $I$. Se define la EDO lineal de orden $n$ a la ecuación de la forma
+\[ a_{n}(t)x^{(n)}(t)+a_{n-1}(t)x^{(n-1)}(t)+\dots+a_{1}(t)x(t)=b(t) \]
+con $a_{n}(t)\ne0$ para todo $t\in I$ y donde $(j)$ denota la derivada $j$-ésima. En tal caso, diremos que dicha EDO es homogénea si $b(t)=0$ para todo $t\in I$.
+\end{definicion}
+
+Como sabemos del primer tema, podemos transformar cualquier EDO de orden $n$ a una EDO de primer orden haciendo el siguiente cambio variable:
+\[ x(t)=x_{1}(t), \quad x^{\prime}(t)=x_{2}(t), \quad x^{\prime\prime}(t)=x_{3}(t), \quad \dots, \quad x^{(n-1)}(t)=x_{n}(t). \]
+En forma matricial obtenemos el siguiente sistema de EDOs de primer orden $X^{\prime}(t)=A(t)X(t)+B(t)$, donde
+\[ X(t)=\begin{pmatrix}x_{1}(t)\\ \vdots\\ x_{n}(t)\end{pmatrix}, \quad A(t)=\begin{pmatrix}0&1&0&\dots&0\\ 0&0&1&\dots&0\\ \vdots&\vdots&\vdots&\ddots&\vdots\\ 0&0&0&\dots&1\\ -\frac{a_{1}(t)}{a_{n}(t)}&-\frac{a_{2}(t)}{a_{n}(t)}&-\frac{a_{3}(t)}{a_{n}(t)}&\dots&-\frac{a_{n-1}(t)}{a_{n}(t)}\end{pmatrix} \]
+y la matriz de términos independientes dada por
+\[ B(t)=\begin{pmatrix}0\\ \vdots\\ \frac{b(t)}{a_{n}(t)}\end{pmatrix}. \]
+En este caso la condición inicial del PVI asociado a una EDO lineal de orden $n$ vendrá dada por la matriz
+\[ X(t_{0})=\begin{pmatrix}x_{1}(t_{0})\\ \vdots\\ x_{n}(t_{0})\end{pmatrix}=X_{0}. \]
+
+\begin{teorema}
+El PVI asociado a una EDO lineal de orden $n$ tiene una única solución global.
+\end{teorema}
+
+\begin{proof}
+En primer lugar, vemos fácilmente que las soluciones del PVI asociado a $X^{\prime}(t)=A(t)X(t)+B(t)$ con condición inicial $X(t_{0})=X_{0}$ equivalen a las soluciones de la ecuación integral
+\[ X(t)=X_{0}+\int_{t_{0}}^{t}(A(s)X(s)+B(s))ds, \]
+gracias al Teorema Fundamental del Cálculo, los coeficientes de dicha matriz son funciones de clase $C^{1}(I)$. De nuevo, vamos a definir la sucesión de iterantes de Picard dada por $x_{0}(t)=X_{0}$ con
+\[ x_{k+1}(t)=X_{0}+\int_{t_{0}}^{t}(A(s)x_{k}(s)+B(s))ds. \]
+Si probamos que dicha sucesión converge uniformemente en el espacio de Banach de las funciones continuas, tendríamos garantizada la existencia de solución. Nótese que esta sucesión está bien definida y podemos recuperar el elemento k-ésimo de la misma con la suma telescópica siguiente
+\[ x_k(t) = x_0 + \sum_{i=0}^{k-1} (x_{i+1}(t)-x_i(t)) \quad \forall k \ge 1. \]
+La idea será aplicar de nuevo el criterio de convergencia de Weierstrass; de hecho, de la convergencia uniforme recuperamos la continuidad del límite. Fijo ahora un compacto $J\subset I$ arbitrario, si pruebo la convergencia uniforme en $J$, tendríamos garantizada la continuidad del límite en todo el intervalo $I$ debido a que $J$ es arbitrario.
+
+Llamemos por $A_{J}=\max_{t\in J}||A(t)||$ y por $B_{J}=\max_{t\in J}||B(t)||$. Nótese que
+\[ |x_{1}(t)-x_{0}|\le\int_{J}(||A(s)|||x_{0}|+||B(s)||)ds\le M_{J}L(J), \]
+donde $M_{J}=A_{J}|x_{0}|+B_{J}$ y $L(J)$ es la longitud del intervalo $J$. Por otro lado,
+\[ |x_{2}(t)-x_{1}|\le\int_{J}(||A(s)|||x_{1}(t)-x_{0}|)ds\le A_{J}M_{J}\frac{L(J)^{2}}{2}. \]
+En consecuencia, podemos probar por inducción que
+\[ |x_{k+1}(t)-x_{k}|\le M_{J}A_{J}^{k}\frac{L(J)^{k+1}}{(k+1)!}\forall k\in\mathbb{N}. \]
+Como la siguiente serie es convergente y tiene el siguiente límite
+\[ \sum_{k=0}^{+\infty}M_{J}A_{J}^{k}\frac{L(J)^{k+1}}{(k+1)!}=M_{J}L(J)e^{A_{J}L(J)} \]
+podemos garantizar la convergencia uniforme de la sucesión de los iterantes de Picard y así pues, garantizar también la existencia de solución. Por último, falta probar la unicidad de solución. Para ello vamos a recordar el Lema de Gronwall:
+Supongamos dos funciones $y,\mu:I=[a,b]\rightarrow\mathbb{R}$ continuas con $\mu\ge0.$ Si existe un $\lambda\in\mathbb{R}$ tal que $y(t)\le\lambda+\int_{a}^{t}y(s)\mu(s)ds$ entonces
+\[ y(t) \le \lambda e^{\int_a^t \mu(s)ds} \quad \forall t \in I. \]
+Pues bien, en nuestro caso, supongamos que tenemos dos soluciones $X(t)$ e $Y(t)$ del mismo PVI. Entonces, tenemos que
+\[ X(t)-Y(t)=\int_{t_0}^{t}A(s)(X(s)-Y(s))ds. \]
+En consecuencia, tomando normas en dicha igualdad obtenemos
+\[ ||X(t)-Y(t)||\le\int_{t_0}^{t}||A(s)||||X(s)-Y(s)||ds. \]
+Aplicando el Lema de Gronwall junto con la definición de norma, obtenemos que $||X(t)-Y(t)||=0$ para todo $t\in I$ llegando a una contradicción.
+\end{proof}
+
+Garantizada una vez la existencia y unicidad de solución, y; de igual forma que en el caso de orden 1, podemos argumentar de forma análoga para probar el siguiente resultado:
+
+\begin{proposicion}
+El conjunto $\mathcal{Z}_{h}$ de soluciones de la EDO lineal homogénea es un espacio vectorial n-dimensional.
+\end{proposicion}
+
+\begin{definicion}
+Un conjunto de $n$ soluciones linealmente independientes de $\mathcal{Z}_{h}$ se denomina sistema fundamental de soluciones.
+\end{definicion}
+
+En particular, forman una base del espacio $\mathcal{Z}_{h}$. En este caso, diremos que $\{\varphi_{1},\dots,\varphi_{n}\}$ son linealmente dependientes si existen constantes $C_{1},\dots,C_{n}$ no nulas tal que
+\[ C_{1}\varphi_{1}(t)+\dots+C_{n}\varphi_{n}(t)=0 \quad \forall t\in I. \]
+Sean $\{\varphi_{1},\dots,\varphi_{n}\}$ un sistema fundamental de soluciones de $\mathcal{Z}_{h}$ entonces la solución general de la EDO lineal homogénea viene dada por
+\[ x(t)=\sum_{i=1}^{n}C_{i}\varphi_{i}(t) \quad \forall t\in I \quad \text{con} \quad C_{1},C_{2},\dots,C_{n}\in\mathbb{R}. \]
+Como consecuencia, teniendo un sistema fundamental $\{\varphi_{1},\dots,\varphi_{n}\}$ obtenemos una matriz solución del sistema homogéneo, que denominaremos por matriz fundamental, dado por
+\[ \Phi(t) = \begin{pmatrix}
+\varphi_{11}(t) & \varphi_{12}(t) & \dots & \varphi_{1n}(t) \\
+\varphi_{21}(t) & \varphi_{22}(t) & \dots & \varphi_{2n}(t) \\
+\vdots & \vdots & \ddots & \vdots \\
+\varphi_{n1}(t) & \varphi_{n2}(t) & \dots & \varphi_{nn}(t)
+\end{pmatrix} \]
+
+\begin{proposicion}
+Las siguientes afirmaciones son equivalentes:
+\begin{enumerate}
+    \item $\{\varphi_{1},\varphi_{2},\dots,\varphi_{n}\}$ es un sistema fundamental de $\mathcal{Z}_{h}.$
+    \item $\Phi(t)$ es una matriz fundamental del sistema lineal homogéneo.
+    \item Existe $t_{0}\in I$ tal que $det(\Phi(t_{0}))\ne0$.
+\end{enumerate}
+\end{proposicion}
+
+Nótese que podemos encontrar matrices cuyas columnas sí son linealmente independientes pero su determinante es cero; en este caso lo que ocurre es que la matriz no es solución del sistema homogéneo. Por ejemplo:
+\[ \begin{pmatrix}1&t&t^{2}\\ 0&1&t\\ 0&0&0\end{pmatrix} \]
+
+\begin{proposicion}[Fórmula de Jacobi-Liouville]
+Sea $\Phi(t)$ una solución matricial del PVI asociado al sistema homogéneo. Entonces,
+\[ det(\Phi(t))=det(\Phi(t_{0}))e^{\int_{t_{0}}^{t}traza(A(s))ds}. \]
+En consecuencia, si el determinante se anula en algún punto del intervalo $I$, entonces se anula en todos los puntos de $I$.
+\end{proposicion}
+
+\begin{proof}
+Sabemos que la derivada del determinante de una matriz fundamental $\Phi(t)$ viene dada por
+\[ (det(\Phi(t)))^{\prime}=\sum_{i=1}^{n}det\Phi_{i}(t)(\varphi_{i1}^{\prime}(t)\dots\varphi_{in}^{\prime}(t)). \]
+Considera el primer sumando y ten en cuenta que $\varphi_{ij}^{\prime}=a_{i1}\varphi_{1j}+\dots+a_{in}\varphi_{nj}$ forman un sistema fundamental de la homogénea; entonces usando combinaciones lineales obtenemos que
+\[ det~\Phi_{1}(t)(\varphi_{11}^{\prime}(t)\dots\varphi_{1n}^{\prime}(t))=a_{11}det(\Phi(t)). \]
+En consecuencia, por inducción tenemos que
+\[ (det(\Phi(t)))^{\prime}=traza(A(t))det(\Phi(t)). \]
+\end{proof}
+
+\begin{proposicion}
+La matriz $\Phi(t)$ determina unívocamente al sistema de EDOs lineal y homogéneo y la solución del PVI asociado con $X(t_{0})=X_{0}$ viene dada por $X(t)=\Phi(t)\Phi^{-1}(t_{0})X_{0}$ para todo $t\in I.$
+\end{proposicion}
+
+\begin{proof}
+En primer lugar, si $\Phi(t)$ es matriz solución de un sistema fundamental, vemos fácilmente que la matriz $A(t)=\Phi^{\prime}(t)\Phi^{-1}(t)$ para todo $t\in I$ y por lo tanto, el sistema queda unívocamente determinado. Y en segundo lugar, si $X(t)=C_{1}\varphi_{1}(t)+\dots+C_{n}\varphi_{n}(t)$ la solución general de $\mathcal{Z}_{h}$ entonces $X(t)=\Phi(t)C$ donde $C=(C_{1},\dots,C_{n})^{T};$ donde $(^{T})$ denota vector traspuesto. Finalmente, teniendo en cuenta que $X_{0}=\Phi(t_{0})C$ deducimos que $C=\Phi(t_{0})^{-1}X_{0}$ y en consecuencia
+\[ X(t)=\Phi(t)\Phi(t_{0})^{-1}X_{0}. \]
+\end{proof}
+
+Terminamos este Tema dando una solución general al PVI de una EDO lineal de orden $n$ usando una fórmula de variación de constantes análoga al tema anterior. De nuevo, el conjunto de soluciones de una EDO lineal en general es un espacio afín de $\mathcal{Z}_{h}$ en particular, si tenemos $X_{p}$ una solución particular y $X_{h}$ solución de la homogénea, entonces
+\[ X(t)=X_{p}(t)+X_{h}(t), \]
+es la solución general del sistema de EDOs. Aplicando el método de variación de constantes, terminamos este tema con el siguiente resultado:
+
+\begin{teorema}
+Considera el PVI $X^{\prime}(t)=A(t)X(t)+B(t)$ para todo $t\in I$ y condición inicial $X(t_{0})=X_{0}$. Si $\Phi(t)$ es la matriz fundamental solución del sistema homogéneo asociado, entonces el PVI tiene una única solución dada por
+\[ X(t)=\Phi(t)\Phi(t_{0})^{-1}X_{0}+\Phi(t)\int_{t_{0}}^{t}\Phi^{-1}(s)B(s)ds. \]
+\end{teorema}
+
+\section{Wronskiano y su relación con la solución}
+
+\begin{definicion}
+Dadas $n$ funciones $\varphi_i: I \subset \mathbb{R} \rightarrow \mathbb{R}$ de clase $C^{n-1}(I)$. Se define el Wronskiano asociado a dichas funciones por $W(\varphi_{1},\dots,\varphi_{n})(t)=det(\Phi(t))$ para todo $t\in I,$ donde la matriz $\Phi(t)$ viene dada por
+\[ \Phi(t)=\begin{pmatrix}\varphi_{1}(t)&\varphi_{2}(t)&\dots&\varphi_{n}(t)\\ \varphi_{1}^{\prime}(t)&\varphi_{2}^{\prime}(t)&\dots&\varphi_{n}^{\prime}(t)\\ \vdots&\vdots&\ddots&\vdots\\ \varphi_{1}^{(n-1)}(t)&\varphi_{2}^{(n-1)}(t)&\dots&\varphi_{n}^{(n-1)}(t)\end{pmatrix}. \]
+\end{definicion}
+
+Nótese que si $\varphi_{1},\dots,\varphi_{n}$ son soluciones de la homogénea, entonces forman un sistema fundamental si y sólo si existe un $t_{0}\in I$ tal que
+\[ W(\varphi_{1},\dots,\varphi_{n})(t_{0})\ne0. \]
+Además de la fórmula de Jacobi-Liouville, deducimos fácilmente que
+\[ W(\varphi_{1},\dots,\varphi_{n})(t)=W(\varphi_{1},\dots,\varphi_{n})(t_{0})e^{-\int_{t_{0}}^{t}\frac{a_{n-1}(s)}{a_{n}(s)}ds}. \]
+Como consecuencia, si el Wronskiano se anula en algún punto, entonces éste es constantemente cero. En particular, $\varphi_{1},\dots,\varphi_{n}$ no sería un sistema fundamental de la homogénea aunque fuesen soluciones de la misma.
+
+Por último, terminamos este tema viendo como se relaciona el Wronskiano con la fórmula de variación de constantes dado un PVI determinado por un sistema de EDOs lineales de primer orden. Considera $\{\varphi_{1},\dots,\varphi_{n}\}$ un sistema fundamental del sistema de EDOs lineal homogéneo. De la definición de Wronskiano, tenemos que
+\[ \Phi^{-1}(t)=\frac{1}{W(\varphi_{1},\dots,\varphi_{n})}Adj(\Phi(t))^{T}, \]
+donde $Adj(\Phi(t))^{T}$ denota la matriz traspuesta de la adjunta de $\Phi(t)$ para todo $t\in I.$ Por otro lado, recuerda que el vector $B(t)$ viene dado por
+\[ B(t)=\begin{pmatrix}0\\ \vdots\\ \frac{b(t)}{a_{n}(t)}\end{pmatrix}. \]
+En consecuencia,
+\[ \Phi^{-1}(t)B(t)=\frac{1}{W(\varphi_{1},\dots,\varphi_{n})(t)}Adj(\Phi(t))^{T}B(t)=\frac{1}{W(\varphi_{1},\dots,\varphi_{n})(t)}\frac{b(t)}{a_{n}(t)}\begin{pmatrix}Adj(\Phi(t))_{n1}\\ Adj(\Phi(t))_{n2}\\ \vdots\\ Adj(\Phi(t))_{nn}\end{pmatrix}. \]
+(Nota: Se ha corregido la expresión matricial para reflejar la multiplicación por el vector columna que solo tiene el último elemento no nulo).
+
+Ahora voy calcular cada uno de los elementos, fijo un $k\in\{1,\dots,n\}$ cualquiera, entonces cada elemento $Adj(\Phi(t))_{nk}$ viene dado por
+\[ Adj(\Phi(t))_{nk}=(-1)^{k+n}W_{k}(s). \]
+con $W_{k}(s)$ es el determinante resultante de intercambiar la columna k-ésima de la matriz $\Phi$ por el vector columna $(0,0,\dots,1)^{T}.$ En particular,
+\[ \Phi^{-1}(t)B(t)=\frac{1}{W(\varphi_{1},\dots,\varphi_{n})(t)}\frac{b(t)}{a_{n}(t)}\begin{pmatrix}(-1)^{1+n}W_{1}(t)\\ \vdots\\ W_{n}(t)\end{pmatrix}. \]
+
+\begin{teorema}
+Considera el PVI $X^{\prime}(t)=A(t)X(t)+B(t)$ para todo $t\in I$ y condición inicial $X(t_{0})=X_{0}$. Si $\Phi(t)$ es la matriz fundamental solución del sistema homogéneo asociado, entonces el PVI tiene una única solución $X(t)$ dada por cada componente $j$-ésima de la forma
+\[ (X(t))_{j}=(\Phi(t)\Phi(t_{0})^{-1}X_{0})_{j}+\sum_{k=1}^{n}\varphi_{k}^{(j-1)}(t)\int_{t_{0}}^{t}(-1)^{k+n}\frac{b(s)}{a_{n}(s)}\frac{W_{k}(s)}{W(\varphi_{1},\dots,\varphi_{n})(s)}ds, \]
+donde $W_{k}(s)$ es el determinante resultante de intercambiar la columna k-ésima de la matriz por el vector columna de componentes $(\delta_{nj})_{j}^{T}$.
+\end{teorema}
+
+\begin{ejemplo}
+Considera la siguiente EDO lineal de segundo orden dada por $x''(t) + x(t) = \text{cotan}(t)$. Sabemos que un sistema fundamental de la EDO homogénea viene dado por $\varphi_{1}(t)=\sin(t)$ y $\varphi_{2}(t)=\cos(t)$. En particular, el Wronskiano será $det(\Phi(t))=-1$. Por otro lado,
+\[ W_1(t) = \det\begin{pmatrix} 0 & \cos(t) \\ 1 & -\sin(t) \end{pmatrix} = -\cos(t), \quad W_2(t) = \det\begin{pmatrix} \sin(t) & 0 \\ \cos(t) & 1 \end{pmatrix} = \sin(t). \]
+En consecuencia, de la fórmula de variación de constantes, tenemos que la solución a la EDO viene dada por
+\[ x(t)=C_{1}\sin(t)+C_{2}\cos(t)-\sin(t)\int_{t_{0}}^{t}\text{cotan}(s)\cos(s)ds-\cos(t)\int_{t_{0}}^{t}\text{cotan}(s)\sin(s)ds. \]
+Se deja al lector la resolución de ambas integrales y el cálculo de las constantes $C_{1}$ y $C_{2}$ para encontrar la solución al PVI.
+\end{ejemplo}
+\chapter{Sistemas de coeficientes constantes}
+\section{Sistemas de Coeficientes constantes. Exponencial de una matriz}
+
+Un sistema de EDOs de primer orden a partir de una EDO de orden $n$ lineal es de coeficientes constantes si $x^{\prime}(t)=Ax(t)+b(t)$, donde $A\in\mathcal{M}_{n}(\mathbb{R})$ constante y $b:I\subset\mathbb{R}\rightarrow\mathbb{R}^{n}$ es una función continua definida en todo un intervalo $I$ de $\mathbb{R}$. Sabemos por el Teorema de existencia y unicidad de solución que el PVI asociado tiene una única solución definida en todo el intervalo $I$.
+
+Estudiamos en primer lugar el caso homogéneo con condición inicial $x(t_{0})=x_{0}$ la solución está determinada por la ecuación integral
+\[ x(t)=x_{0}+\int_{t_{0}}^{t}Ax(s)ds. \]
+En este caso, los iterantes de Picard vienen dados por
+\[ \phi_{0}=x_{0} \quad \text{y} \quad \phi_{k}=x_{0}\left(I_{n}+\sum_{j=1}^{k}\frac{(t-t_{0})^{j}A^{j}}{j!}\right) \quad \forall k\in \mathbb{N}. \]
+La serie converge uniformemente en cada compacto de $\mathbb{R}$ a la única solución de la homogénea, pues tenemos una lineal, y por lo tanto, definiendo la exponencial de la matriz $A$ dada por
+\[ e^{(t-t_{0})A}=\sum_{j=0}^{+\infty}\frac{(t-t_{0})^{j}A^{j}}{j!} \]
+donde $I_{n}$ es la matriz identidad de orden $n$; se tiene, por unicidad, que la solución de la ecuación homogénea viene dada por
+\[ x(t)=e^{(t-t_{0})A}x_{0}. \]
+
+\begin{teorema}
+El PVI asociado a un sistema lineal homogéneo con condición inicial $x(t_{0})=x_{0}$ tiene una única solución definida en todo $\mathbb{R}$ dada por
+\[ x(t)=e^{(t-t_{0})A}x_{0} \]
+\end{teorema}
+
+A continuación, dejo al lector la demostración de las siguientes propiedades de la exponencial de una matriz.
+
+\begin{proposicion}
+Las siguientes propiedades son ciertas:
+\begin{enumerate}
+    \item $e^{0}=I_{n}$, donde $I_{n}$ es la matriz identidad de orden $n$.
+    \item $||e^{tA}||\le e^{|t||A||}$
+    \item $det(e^{tA})=e^{t~traza(A)}$. En particular, dicha exponencial es regular.
+    \item $(e^{tA})^{\prime}=Ae^{tA}=e^{tA}A.$
+    \item Si $A$ y $B$ conmutan, entonces $B~e^{tA}=e^{tA}B$ y $e^{t(A+B)}=e^{tA}e^{tB}$
+    \item Si $A$ es semejante a una matriz $J$, es decir, existe una matriz regular $P\in\mathcal{M}_{n}(\mathbb{R})$ tal que $A=PJP^{-1}$, entonces $e^{tA}$ es semejante a $e^{tJ}$ con la misma matriz de paso $P$.
+\end{enumerate}
+\end{proposicion}
+
+Como consecuencia del Teorema 1.1 junto con la fórmula de variación de constantes para EDOs lineales, vista en el Tema anterior; obtenemos el siguiente resultado:
+
+\begin{corolario}
+La única solución del PVI con $x^{\prime}(t)=Ax(t)+b(t)$ con $b:I\subset\mathbb{R}\rightarrow\mathbb{R}$ continua en el intervalo $I$ y condición inicial $x(t_{0})=x_{0}$ viene dada por
+\[ x(t)=e^{(t-t_{0})A}x_{0}+e^{tA}\int_{t_{0}}^{t}e^{-sA}b(s)ds. \]
+\end{corolario}
+
+\section{Forma canónica de Jordan}
+
+Gracias a la última propiedad de la Proposición anterior, podemos calcular la exponencial de una matriz calculando la exponencial de la matriz $J$, a la cuál es semejante; y recordad, si podemos diagonalizar la matriz $A$ entonces calcular potencias de la matriz se vuelve trivial. Este argumento motivó el estudio de la forma canónica de Jordan.
+
+\begin{definicion}
+Sea $A\in\mathcal{M}_{n}(\mathbb{R})$ se dice que $\lambda\in\mathbb{C}$ es un valor propio de la matriz $A$ si $det(A-\lambda I_{n})=0$. Al conjunto de todos los valores propios de $A$ se denota por
+\[ \sigma(A)=\{\lambda\in\mathbb{C}:det(A-\lambda I_{n})=0\}. \]
+\end{definicion}
+
+\begin{definicion}
+Dado $\lambda\in\sigma(A),$ denotaremos por $m_{A}(\lambda)$ a la multiplicidad algebraica de $\lambda$, esto es, la multiplicidad de $\lambda$ como raíz del polinomio $det(A-\lambda I_{n})$. Por otro lado, $m_{G}(\lambda)$ será la multiplicidad geométrica de $\lambda$, esto es, la dimensión de $Ker(A-\lambda I_{n})$. Finalmente, $m_{k}(\lambda)$ será la dimensión de $Ker((A-\lambda I_{n})^{k})$ para $k\in\mathbb{N},$ es decir, $n - rango((A-\lambda I_{n})^{k})$.
+\end{definicion}
+
+\begin{teorema}[Forma Canónica de Jordan]
+Sea $A\in\mathcal{M}_{n}(\mathbb{R}).$ Existen $P\in\mathcal{M}_{n}(\mathbb{R})$ regular y $J\in\mathcal{M}_{n}(\mathbb{R})$, denominada forma canónica real de Jordan, dada por $J=diag(J_{1},\dots,J_{s},L_{1},\dots,L_{r})$ tales que
+\[ A=PJP^{-1} \]
+donde cada bloque $J_{i}$ con $i=1,\dots,s$ está asociado a un mismo valor real $\lambda \in \sigma(A)\cap\mathbb{R}$ y es de la forma
+\[ J_{i}=\begin{pmatrix}\lambda&1&0&\dots&0\\ 0&\lambda&1&\dots&0\\ \vdots&\vdots&\vdots&\ddots&\vdots\\ 0&0&0&\dots&\lambda\end{pmatrix} \]
+y cada bloque $L_{j}$ con $j=1,\dots,r$ está asociado a un mismo par de valores complejos $\lambda, \overline{\lambda}\in\sigma(A)\cap\mathbb{C}\setminus\mathbb{R},$ y, si $\lambda=a+ib$, entonces están dados por
+\[ L_{j}=\begin{pmatrix}\Lambda&I_{2}&0&\dots&0\\ 0&\Lambda&I_{2}&\dots&0\\ \vdots&\vdots&\vdots&\ddots&\vdots\\ 0&0&0&\dots&\Lambda\end{pmatrix}, \quad \text{con} \quad \Lambda=\begin{pmatrix}a&b\\ -b&a\end{pmatrix} \]
+donde $I_{2}$ es la identidad de orden 2.
+\end{teorema}
+
+Cada valor propio real $\lambda\in\sigma(A)\cap\mathbb{R}$, se repite exactamente $m_{A}(\lambda)$ veces en la diagonal de $J_{i}$ y por cada par de valores propios complejos $\lambda, \overline{\lambda}\in\sigma(A)\setminus\mathbb{R}$ aparecen $(m_{A}(\lambda)+m_{A}(\overline{\lambda}))/2$ bloques de la forma $\Lambda$. Además, el número de bloques elementales correspondiente al valor propio $\lambda$ es $m_{G}(\lambda),$ y finalmente, el número de bloques elementales de dimensión $l$, si $\lambda$ es real, o dimensión $2l$ si $\lambda\in\mathbb{C}$ viene dado por
+\[ -m_{l-1}(\lambda)+2m_{l}(\lambda)-m_{l+1}(\lambda), \]
+siendo $m_{0}(\lambda)=0.$
+
+\begin{ejemplo}
+Considera la matriz
+\[ A=\begin{pmatrix}1&0&0\\ 0&1&1\\ 0&-1&1\end{pmatrix} \]
+Nótese que su polinomio característico viene dado por $P_{A}(\lambda)=(\lambda-1)(\lambda^{2}+1),$ dándonos como valores propios $\lambda_{1}=1$ con $m_{A}(\lambda_{1})=1$ y $\lambda_{2}=i$ con $m_{A}(\lambda_{2})=m_{A}(\overline{\lambda}_{2})=1.$ Claramente, no es diagonalizable en $\mathbb{R}$. Además, el número de bloques elementales asociados a $\lambda_{1}$ es 1 y el número de bloques elementales asociados a $\lambda_{2}$ es 1. Luego, la forma canónica de $A$ es la propia matriz $A$.
+\end{ejemplo}
+
+Por otro lado, nótese que si $J=diag(J_{1},J_{2},\dots,J_{s},L_{1},\dots,L_{r}),$ entonces la exponencial
+\[ e^{tJ}=diag(e^{tJ_{1}},e^{tJ_{2}},\dots,e^{tJ_{s}},e^{tL_{1}},\dots,e^{tL_{r}}). \]
+En consecuencia, tenemos que calcular la exponencial de cada $e^{tJ_{i}}$ y de cada $e^{tL_{j}}$.
+
+\textbf{Caso: $e^{tJ_{i}}$.} Fijo $i\in\{1,\dots,s\}$ cualquiera, cada $J_{i}$ se puede escribir de la forma
+\[ J_{i}=\lambda_{i}Id_{m_{A}(\lambda_{i})}+Z, \]
+donde $Z$ es una matriz nilpotente de orden $m_{A}(\lambda_{i})$. Como la identidad y $Z$ conmutan, tenemos que
+\[ e^{tJ_{i}}=e^{t\lambda_{i}Id_{m_{A}(\lambda_{i})}}e^{tZ} \]
+Como $Z^{m}=0$ para todo $m\ge m_{A}(\lambda_{i})$, se tiene que
+\[ e^{tJ_{i}}=e^{t\lambda_{i}}\begin{pmatrix}1&t&\frac{t^{2}}{2}&\dots&\frac{t^{m_{A}(\lambda_{i})-1}}{(m_{A}(\lambda_{i})-1)!}\\ 0&1&t&\dots&\dots\\ \vdots&\vdots&\vdots&\ddots&\vdots\\ 0&0&0&\dots&1\end{pmatrix}. \]
+
+\textbf{Caso: $e^{tL_{j}}$.} Fijo $j\in\{1,\dots,r\}$ cualquiera, cada $L_{j}$ se puede escribir de la forma
+\[ L_{j}=\Lambda Id_{p}+Z, \]
+donde $2p=m_{A}(\lambda)$ y $Z$ es nilpotente de orden $p$. Como
+\[ e^{t(a+ib)}=e^{at}(\cos(bt)+i\sin(bt)), \]
+y $Z$ conmuta con la identidad, tenemos que
+\[ e^{tL_{j}}=e^{t\Lambda}\begin{pmatrix}1&t&\frac{t^{2}}{2}&\dots&\frac{t^{p-1}}{(p-1)!}\\ 0&\vdots&\vdots&\ddots&\vdots\\ 0&0&0&\dots&1\end{pmatrix}, \quad \text{donde} \quad e^{t\Lambda}=e^{ta}\begin{pmatrix}\cos(bt)&\sin(bt)\\ -\sin(bt)&\cos(bt)\end{pmatrix} \]
+
+\subsection{Caso $n=2$}
+Supongamos que $A\in\mathcal{M}_{2}(\mathbb{R})$ no diagonalizable (el caso diagonalizable es trivial). En este caso, $A$ puede tener un valor propio $\lambda\in\mathbb{R}$ con $m_{A}(\lambda)=2$ o un valor propio complejo $\lambda = a + ib$ y $\overline{\lambda} = a - ib$ con $m_{A}(\lambda)=m_{A}(\overline{\lambda})=1$. Consecuentemente, la forma canónica de Jordan viene dada por
+\[ J=\begin{pmatrix}\lambda&1\\ 0&\lambda\end{pmatrix} \quad \text{o} \quad J=\begin{pmatrix}a&b\\ -b&a\end{pmatrix} \]
+dependiendo si $\lambda$ es o no real. Por último, buscamos la matriz de paso $P$; que en el caso $A$ complejo es trivial pues sería buscar un vectores independientes de $Ker(A-\lambda I_{2})$ y $Ker(A-\overline{\lambda}I_{2}).$ Y en el caso, $\lambda$ real, tenemos que buscar dos vectores $v_{1}$, $v_{2}$ linealmente independientes tal que $v_{1}\in Ker(A-\lambda I)$ y $v_{2}\in Ker(A-\lambda I)^{2}$ puesto que $Av_{1}=\lambda v_{1}$ y $Av_{2}=v_{1}+\lambda v_{2}$.
+
+\subsection{Caso $n=3$}
+Sea ahora $A\in\mathcal{M}_{3}(\mathbb{R})$ no diagonalizable de igual forma que en el caso anterior. En este caso, tenemos que $A$ puede tener dos vectores propios distintos $\lambda_{1}, \lambda_{2}$ reales con $m_{A}(\lambda_{1})=1$ y $m_{A}(\lambda_{2})=2$. Por otro lado, puede tener un único valor propio real $\lambda$ con $m_{A}(\lambda)=3$ y por ultimo, puede tener uno real $\lambda_{1}$ y dos complejos $\lambda_{2}=a+ib$ y $\overline{\lambda}_{2}=a-ib.$ La forma canónica de Jordan, según el caso, será de la forma
+\[ J=\begin{pmatrix}\lambda_{1}&0&0\\ 0&\lambda_{2}&1\\ 0&0&\lambda_{2}\end{pmatrix}, \quad J=\begin{pmatrix}\lambda&1&0\\ 0&\lambda&1\\ 0&0&\lambda\end{pmatrix} \quad \text{o} \quad J=\begin{pmatrix}\lambda_{1}&0&0\\ 0&a&b\\ 0&-b&a\end{pmatrix} \]
+Y para sacar la matriz $P$, podemos razonar de igual forma que el caso anterior teniendo en cuenta las multiplicidades.
+
+\section{Ecuación lineal de orden superior con coeficientes constantes}
+
+En este último apartado, vamos a considerar las ecuaciones diferenciales lineales de orden $n$ de coeficientes constantes, de la forma
+\[ L(x(t))=x^{(n)}(t)+a_{n-1}x^{(n-1)}(t)+\dots+a_{1}x^{\prime}(t)+a_{0}x(t)=0, \]
+donde $L:C^{n}(I)\rightarrow C^{n}(I)$ es un operador lineal sobre las funciones de clase $C^{n}(I)$ definidas en un intervalo $I$. Nótese que de forma matricial, dicha EDO puede ser vista de la forma:
+\[ X^{\prime}(t)=\begin{pmatrix}0&1&0&\dots&0\\ 0&0&1&\dots&0\\ \vdots&\vdots&\vdots&\ddots&\vdots\\ -a_{0}&-a_{1}&-a_{2}&\dots&-a_{n-1}\end{pmatrix}X(t). \]
+
+\begin{lema}
+La ecuación característica de la matriz asociada a una EDO lineal de orden $n$, dada por $L(x)=0,$ viene dada por el polinomio característico
+\[ p(\lambda)=\lambda^{n}+a_{n-1}\lambda^{n-1}+\dots+a_{1}\lambda+a_{0}=0 \]
+\end{lema}
+
+El siguiente resultado, nos permite obtener un sistema fundamental para la homogénea y de ahí, aplicar la Teoría vista en el Tema anterior para poder resolver cualquier EDO lineal de coeficientes constantes y de cualquier orden.
+
+\begin{teorema}
+Supongamos que $\lambda_{1},\lambda_{2},\dots,\lambda_{m}$ son las $m$ soluciones distintas de la ecuación característica con multiplicidad algebraica $m_{A}(\lambda_{1})+\dots+m_{A}(\lambda_{m})=n$. Entonces, el siguiente conjunto
+\[ \bigcup_{i=1}^{m}\{t^{k}e^{t\lambda_{i}} \mid k=0,1,\dots,m_{A}(\lambda_{i})-1\}, \]
+forma un sistema fundamental de soluciones del sistema de ecuaciones.
+\end{teorema}
+
+\begin{proof}
+En primer lugar, vamos a probar que, fijado cualquier $\lambda=\lambda_{i}$ solución de la ecuación característica, las funciones de la forma
+\[ t^{k}e^{\lambda_{i}t} \quad \text{con} \quad k = 0,1,\dots, m_{A}(\lambda) - 1, \]
+son soluciones de la EDO lineal $L(x)=0,$ donde $L$ es el operador lineal definido anteriormente. En efecto, como $L(e^{t\lambda})=e^{t\lambda}p(\lambda)$, se tiene que
+\[ L(t^{k}e^{\lambda t})=L\left(\frac{\partial^{k}}{\partial\lambda^{k}}e^{\lambda t}\right)=\frac{\partial^{k}}{\partial\lambda^{k}}(L(e^{\lambda t}))=\frac{\partial^{k}}{\partial\lambda^{k}}(e^{\lambda t}p(\lambda))=0. \]
+Ahora, solo faltaría ver que efectivamente son linealmente independientes. Considera la siguiente combinación lineal,
+\[ p_{1}(t)e^{\lambda_{1}t}+p_{2}(t)e^{\lambda_{2}t}+\dots+p_{m}(t)e^{\lambda_{m}t}=0 \]
+donde cada $p_{j}$ son polinomios de grado, a lo sumo, $m_{A}(\lambda_{j})-1$. Equivalentemente, podemos considerar
+\[ p_{1}(t) + p_{2}(t)e^{(\lambda_{2}-\lambda_{1})t}+\dots+p_{m}(t)e^{(\lambda_{m}-\lambda_{1})t} = 0. \]
+Si derivamos dicha expresión $m_{\lambda_{1}}$-veces, obtenemos
+\[ p_{2}^{\prime}(t)e^{(\lambda_{2}-\lambda_{1})t}+\dots+p_{m}^{\prime}(t)e^{(\lambda_{m}-\lambda_{1})t}=0, \]
+donde ahora, los nuevos polinomios $p_{j}^{\prime}$ son de grado, a lo sumo, $m_{A}(\lambda_{j})-1$. De hecho, el término líder será, el término líder de $p_{j}(t)(\lambda_{j}-\lambda_{1})^{m_{A}(\lambda_{1})}$. Así, podemos repetir el proceso por inducción $m-1$ pasos, parar probar que $p_{m}(t)=0$ constantemente; y en consecuencia, todos los polinomios $p_{j}(t)=0.$
+\end{proof}
+
+\begin{ejemplo}
+Considera la siguiente EDO lineal de orden 2 de coeficientes constantes
+\[ x''(t)-6x'(t)+9x(t) = e^{3t}t^{-2}. \]
+El polinomio característico asociado será $p(\lambda)=\lambda^{2}-6\lambda+9=(\lambda-3)^{2}$, por lo tanto, tenemos un único autovalor $\lambda=3$ con $m_{A}(3)=2.$ Consecuentemente, las siguientes dos funciones $\{e^{3t},te^{3t}\}$ forman un sistema fundamental de la EDO homogénea asociada cuyo Wronskiano $W=e^{6t}$. Además,
+\[ W_1 = \det\begin{pmatrix} 0 & te^{3t} \\ 1 & (1+3t)e^{3t} \end{pmatrix} = -te^{3t}, \quad W_2 = \det\begin{pmatrix} e^{3t} & 0 \\ 3e^{3t} & 1 \end{pmatrix} = e^{3t}. \]
+Finalmente, aplicando el Teorema 3.2 del Tema anterior, deducimos que la solución viene dada por
+\[ x(t)=C_{1}e^{3t}+C_{2}te^{3t}+e^{3t}\int_{t_{0}}^{t}e^{3s}s^{-2}\frac{-se^{3s}}{e^{6s}}ds+te^{3t}\int_{t_{0}}^{t}e^{3s}s^{-2}\frac{e^{3s}}{e^{6s}}ds \]
+\[ =C_{1}e^{3t}+C_{2}te^{3t}-e^{3t}\int_{t_{0}}^{t}\frac{1}{s}ds+te^{3t}\int_{t_{0}}^{t}s^{-2}ds. \]
+\end{ejemplo}
+
+\subsection{Ecuación de Euler}
+En esta parte de los apuntes, vamos a estudiar un caso muy particular de EDO, denominada ecuación de Euler; qué tras realizar un cambio de variable, vamos a transformarla a una EDO lineal de coeficientes constantes y aplicar la teoría ya conocida.
+
+Sean $\alpha,\beta,a_{0},a_{1},\dots,a_{n}\in\mathbb{R}$ constantes reales. Se define la ecuación de Euler por la siguiente EDO de orden $n$ dada por
+\[ a_{n}(\alpha t+\beta)^{n}x^{(n)}(t)+a_{n-1}(\alpha t+\beta)^{n-1}x^{(n-1)}(t)+\dots+a_{0}x(t)=0. \]
+en el dominio $\Omega=\{(t,x)\in\mathbb{R}^{2}: \alpha t+\beta>0\}$. Ahora, considera el siguiente cambio de variable en el tiempo, dada por $s=\log(\alpha t+\beta)$. Nótese qué, claramente dicho cambio de variable es un difeomorfismo, y, teniendo en cuenta la regla de cadena tenemos que
+\[ x^{(n)}(t)=\frac{\alpha^{n}}{(\alpha t+\beta)^{n}}\prod_{j=0}^{n-1}(D-j)x(s), \quad \text{con} \quad D=\frac{d}{ds} \]
+En consecuencia, nuestra EDO original, puede escribirse por
+\[ a_{n}\alpha^{n}\prod_{j=0}^{n-1}(D-j)x(s)+\dots+a_{0}x(s)=0, \]
+que consiste en una EDO lineal de orden $n$ de coeficientes constantes.
+
+\begin{ejemplo}
+Considera la EDO $t^{2}x^{\prime\prime}(t)+tx^{\prime}(t)+x(t)=0$. En este caso, si usamos el cambio de variable $t=e^{s}$, tenemos que
+\[ x^{\prime}(t)=\frac{1}{t}x^{\prime}(s) \quad \text{y} \quad x''(t) = \frac{1}{t^2}(x''(s) - x'(s)). \]
+En consecuencia, nuestra EDO queda de la forma
+\[ x^{\prime\prime}(s)-x^{\prime}(s)+x^{\prime}(s)+x(s)=x^{\prime\prime}(s)+x(s)=0, \]
+una EDO lineal de segundo orden de coeficientes constantes.
+\end{ejemplo}
+
+\subsection{Un caso particular de la ecuación de Bessel}
+En este último apartado, vamos a estudiar un caso particular de la ecuación de Bessel dada por
+\[ t^{2}x''(t)+tx'(t)+(t^{2})x(t)=0 \quad \forall t>0. \]
+En general, la ecuación de Bessel viene dada por
+\[ t^{2}x''(t)+tx'(t)+(t^{2}-\alpha^{2})x(t)=0, \]
+para $\alpha>0$ una constante real. Para el estudio de nuestro caso, vamos a realizar el siguiente cambio de variable $y(t)=\sqrt{t}x(t)$. Un simple cálculo, nos dice que
+\[ x^{\prime}(t)=t^{-1/2}y^{\prime}(t)-\frac{1}{2}t^{-3/2}y(t), \]
+\[ x^{\prime\prime}(t)=-\frac{1}{2}t^{-3/2}y^{\prime}(t)+t^{-1/2}y^{\prime\prime}(t)+\frac{3}{4}t^{-5/2}y(t)-\frac{1}{2}t^{-3/2}y^{\prime}(t). \]
+En consecuencia, la EDO que verifica la función $y$ viene dada por
+\[ y^{\prime\prime}(t)+y(t)=0 \]
+lineal de segundo orden de coeficientes constantes. En consecuencia, la función de Bessel para este caso particular viene dada por
+\[ x(t)=\frac{1}{\sqrt{t}}(A\sin(t)+B\cos(t)), \]
+con $A, B\in\mathbb{R}$. Se deja al lector el ejercicio de comprobar que para el caso general de $\alpha>0,$ no funciona este cambio de variable. De hecho, esta EDO se resuelve por un método de desarrollo en serie de potencias; cuyas soluciones son funciones especiales denominadas funciones de Bessel.
+
+\end{document}
+
+
+
