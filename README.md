@@ -3,11 +3,6 @@
 This repository serves as a centralized **compendium of pedagogical resources** and theoretical notes covering the diverse modules of **Mathematical Methods** within the Bachelor’s Degree in Physics at the **University of Córdoba (UCO)**.
 
 The primary objective of these materials is to establish a robust **analytical toolkit** essential for the formal development and rigorous articulation of physical theories. The content bridges the gap between abstract mathematical structures and their direct application in theoretical and experimental physics.
-
----
-
-## Core Curricular Pillars
-
 The repository is structured around four fundamental branches of mathematical analysis:
 
 ### 1. Statistical Methods
